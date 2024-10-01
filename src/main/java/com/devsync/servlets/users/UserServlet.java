@@ -32,7 +32,6 @@ public class UserServlet extends HttpServlet {
                 if ("create".equals(action)) {
                         req.getRequestDispatcher("/users/create.jsp").forward(req, resp);
                 } else {
-
                         List<User> users = userDao.findAll();
                         req.setAttribute("users", users);
                         req.getRequestDispatcher("/users/list.jsp").forward(req, resp);
@@ -41,10 +40,25 @@ public class UserServlet extends HttpServlet {
 
 
         protected  void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                String method = req.getParameter("_method");
 
+                if ("DELETE".equalsIgnoreCase(method)) {
+                        doDelete(req , resp);
+                } else if ("UPDATE".equalsIgnoreCase(method)) {
+                        doUpdate(req , resp);
+                } else if ("PUT".equalsIgnoreCase(method)) {
+                        doUpdate(req , resp);
+                } else {
+                        doSave(req, resp);
+                }
+
+        }
+
+
+
+
+        protected void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 req.setCharacterEncoding("UTF-8");
-
-
                 String username = req.getParameter("username");
                 String name = req.getParameter("name");
                 String prenom = req.getParameter("prenom");
@@ -61,10 +75,41 @@ public class UserServlet extends HttpServlet {
                 user.setUserType(UserType.valueOf(userType.toUpperCase()));
 
                 userDao.save(user);
+                resp.sendRedirect(req.getContextPath() + "/users");
+        }
 
+        protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                Long userId = Long.parseLong(req.getParameter("id"));
+                userDao.delete(userId);
+                req.setAttribute("successDeleteMessage", "User deleted successfully!");
+                resp.sendRedirect(req.getContextPath() + "/users");
 
         }
 
+        protected  void doUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                Long userId = Long.parseLong(req.getParameter("id"));
+                User user = userDao.findById(userId);
+                if (user != null) {
+                        req.setAttribute("user", user);
+                        req.getRequestDispatcher("/users/update.jsp").forward(req, resp);
+                }
+        }
 
+
+        @Override
+        protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                Long userId = Long.parseLong(req.getParameter("id"));
+                String username = req.getParameter("username");
+                String name = req.getParameter("name");
+                String prenom = req.getParameter("prenom");
+                String email = req.getParameter("email");
+                String password = req.getParameter("password");
+                UserType userType = UserType.valueOf(req.getParameter("userType"));
+
+                User user = new User(userId, username, name, prenom, email, password, userType);
+                userDao.update(user);
+
+                resp.sendRedirect(req.getContextPath() + "/users");
+        }
 
 }

@@ -34,13 +34,17 @@ public class UserDao {
     }
 
 
-    public void delete(User user) {
+    public void delete(Long id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.remove(user);
+
+        User user = em.find(User.class, id);
+        if (user != null) {
+            em.remove(user);
+        }
+
         em.getTransaction().commit();
         em.close();
-
     }
 
 
@@ -50,5 +54,12 @@ public class UserDao {
         em.merge(user);
         em.getTransaction().commit();
         em.close();
+    }
+
+    public User findById(Long userId) {
+        EntityManager em = emf.createEntityManager();
+        User user = em.find(User.class, userId);
+        em.close();
+        return user;
     }
 }

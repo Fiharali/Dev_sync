@@ -10,6 +10,10 @@
 </head>
 <body>
 
+
+
+
+
 <div class="relative  mx-auto mt-18  p-20  ">
     <a class="bg-blue-500 hover:bg-blue-700   btn rigth mx-6 text-white font-bold py-2 px-4 rounded " href="/dev/users?action=create"> Create </a>
 
@@ -65,14 +69,14 @@
                 <%= user.getUserType() %>
             </th>
             <td class="px-6 py-4 flex">
-                <form action="/users" method="post">
+                <form action="/dev/users" method="post">
                     <input type="hidden" name="id" value="<%= user.getId() %>">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
                 </form>
-                <form action="/users" method="post">
+                <form action="/dev/users" method="post">
                     <input type="hidden" name="id" value="<%= user.getId() %>">
-                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="_method" value="UPDATE">
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
                 </form>
             </td>
