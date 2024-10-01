@@ -11,8 +11,19 @@ CREATE TABLE public.users
 
 
 
+
+
 CREATE TYPE userType AS ENUM ('USER', 'MANAGER');
 
 
 
 select * from users;
+
+
+drop  table  users;
+
+ALTER TABLE users
+   add  column  userType varchar(255);
+
+
+

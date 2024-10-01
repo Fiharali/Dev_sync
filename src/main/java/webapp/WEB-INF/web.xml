@@ -7,7 +7,7 @@
 
     <servlet>
         <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.devsync.servlets.UserServlet</servlet-class>
+        <servlet-class>com.devsync.servlets.users.UserServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

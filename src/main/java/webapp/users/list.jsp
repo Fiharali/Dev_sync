@@ -4,14 +4,17 @@
 <html>
 <head>
     <title>Title</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet" />
 
 </head>
 <body>
 
-<div class="relative overflow-x-auto  mx-auto mt-10">
-    <table class="w-1/2 mx-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+<div class="relative  mx-auto mt-18  p-20  ">
+    <a class="bg-blue-500 hover:bg-blue-700   btn rigth mx-6 text-white font-bold py-2 px-4 rounded " href="/dev/users?action=create"> Create </a>
+
+    <table class="w-1/2 mx-auto text-sm text-left  mt-5 rtl:text-right text-gray-500 ">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
         <tr>
             <th scope="col" class="px-6 py-3">
                 ID
@@ -29,7 +32,10 @@
                 email
             </th>
             <th scope="col" class="px-6 py-3">
-                email
+                User type
+            </th>
+            <th scope="col" class="px-6 py-3">
+               Actions
             </th>
         </tr>
         </thead>
@@ -39,24 +45,24 @@
             if (users != null) {
                 for (User user : users) {
         %>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        <tr class="bg-white border-b">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                 <%= user.getId() %>
             </th>
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                 <%= user.getUsername() %>
             </th>
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                 <%= user.getName() %>
             </th>
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                 <%= user.getPrenom() %>
             </th>
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                 <%= user.getEmail() %>
             </th>
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                <%= user.getEmail() %>
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                <%= user.getUserType() %>
             </th>
             <td class="px-6 py-4 flex">
                 <form action="/users" method="post">
@@ -78,7 +84,7 @@
         </tbody>
     </table>
 
-    <a href="/"> back</a>
+
 </div>
 
 
