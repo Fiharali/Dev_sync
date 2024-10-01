@@ -28,19 +28,19 @@ public class User {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "usertype")
-    private UserType userType;
+    //@Column(name = "usertype")
+    //private UserType userType;
 
     public User() {}
 
-    public User(Long id, String name, String prenom, String email, String password, String username , UserType userType) {
+    public User(Long id, String name, String prenom, String email, String password, String username ) {
         this.id = id;
         this.name = name;
         this.prenom = prenom;
         this.email = email;
         this.password = password;
         this.username = username;
-        this.userType = userType;
+       // this.userType = userType;
     }
 
     public Long getId() {
@@ -91,13 +91,7 @@ public class User {
         this.username = username;
     }
 
-    public UserType getUserType() {
-        return userType;
-    }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
 
 
 
