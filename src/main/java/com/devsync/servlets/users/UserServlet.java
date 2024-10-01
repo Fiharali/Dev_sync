@@ -47,7 +47,7 @@ public class UserServlet extends HttpServlet {
                 } else if ("UPDATE".equalsIgnoreCase(method)) {
                         doUpdate(req , resp);
                 } else if ("PUT".equalsIgnoreCase(method)) {
-                        doUpdate(req , resp);
+                        doPut(req , resp);
                 } else {
                         doSave(req, resp);
                 }
@@ -106,9 +106,8 @@ public class UserServlet extends HttpServlet {
                 String password = req.getParameter("password");
                 UserType userType = UserType.valueOf(req.getParameter("userType"));
 
-                User user = new User(userId, username, name, prenom, email, password, userType);
+                User user = new User(userId, name, prenom, email, password, username,userType);
                 userDao.update(user);
-
                 resp.sendRedirect(req.getContextPath() + "/users");
         }
 

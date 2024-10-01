@@ -107,8 +107,8 @@
         <div class="form-group">
             <label for="userType">User Type:</label>
             <select id="userType" name="userType" required>
-                <option value="MANAGER" ${user.usertype == "MANAGER" ? "selected" : ""}>MANAGER</option>
-                <option value="USER" ${user.usertype == "USER" ? "selected" : ""}>USER</option>
+                <option value="MANAGER" ${user.userType == "MANAGER" ? "selected" : ""}>MANAGER</option>
+                <option value="USER" ${user.userType == "USER" ? "selected" : ""}>USER</option>
             </select>
         </div>
 
