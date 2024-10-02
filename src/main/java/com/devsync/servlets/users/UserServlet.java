@@ -39,30 +39,23 @@ public class UserServlet extends HttpServlet {
         @Override
         protected  void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 String method = req.getParameter("_method");
+
                 switch (method) {
                         case "DELETE":
                                 userService.delete(req, resp);
                                 break;
-                        case "edit":
+                        case "UPDATE":
                                 userService.edit(req, resp);
                                 break;
                         case "PUT":
                                 userService.update(req, resp);
                                 break;
-                        default:
+                       default:
                                 userService.save(req, resp);
                                 break;
                 }
 
         }
-
-
-
-
-
-
-
-
 
 
 }

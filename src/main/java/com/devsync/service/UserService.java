@@ -41,6 +41,8 @@ public class UserService {
         user.setPassword(password);
         user.setUserType(UserType.valueOf(userType.toUpperCase()));
 
+
+
         userDao.save(user);
         resp.sendRedirect(req.getContextPath() + "/users");
     }
