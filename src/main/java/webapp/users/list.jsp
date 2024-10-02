@@ -6,7 +6,7 @@
     <title>Title</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet" />
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -72,11 +72,11 @@
                 <form action="/dev/users" method="post">
                     <input type="hidden" name="id" value="<%= user.getId() %>">
                     <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded delete-btn">Delete</button>
                 </form>
                 <form action="/dev/users" method="post">
                     <input type="hidden" name="id" value="<%= user.getId() %>">
-                    <input type="hidden" name="_method" value="UPDATE">
+                    <input type="hidden" name="_method" value="edit">
                     <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Update</button>
                 </form>
             </td>
@@ -91,7 +91,36 @@
 
 </div>
 
+<script>
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const form = button.parentElement;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "User has been deleted.",
+                        icon: "success"
+                    });
+                    setTimeout(() => {
+                        form.submit();
+                    }, 1000);
 
+                }
+            });
+        });
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </body>
 </html>

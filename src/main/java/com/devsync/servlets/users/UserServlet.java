@@ -36,20 +36,32 @@ public class UserServlet extends HttpServlet {
         }
 
 
+        @Override
         protected  void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 String method = req.getParameter("_method");
-
-                if ("DELETE".equalsIgnoreCase(method)) {
-                        userService.delete(req , resp);
-                } else if ("UPDATE".equalsIgnoreCase(method)) {
-                        userService.edit(req , resp);
-                } else if ("PUT".equalsIgnoreCase(method)) {
-                        userService.update(req , resp);
-                } else {
-                        userService.save(req, resp);
+                switch (method) {
+                        case "DELETE":
+                                userService.delete(req, resp);
+                                break;
+                        case "edit":
+                                userService.edit(req, resp);
+                                break;
+                        case "PUT":
+                                userService.update(req, resp);
+                                break;
+                        default:
+                                userService.save(req, resp);
+                                break;
                 }
 
         }
+
+
+
+
+
+
+
 
 
 
