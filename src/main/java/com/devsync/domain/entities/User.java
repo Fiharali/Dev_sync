@@ -25,6 +25,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "tokens")
+    private int tokens;
+
     @Column(name = "username")
     private String username;
 
@@ -35,7 +38,7 @@ public class User {
 
     public User() {}
 
-    public User(Long id, String name, String prenom, String email, String password, String username , UserType userType) {
+    public User(Long id, String name, String prenom, String email, String password, String username , UserType userType,int tokens) {
         this.id = id;
         this.name = name;
         this.prenom = prenom;
@@ -43,6 +46,7 @@ public class User {
         this.password = password;
         this.username = username;
         this.userType = userType;
+        this.tokens = tokens;
     }
 
     public Long getId() {
@@ -99,6 +103,14 @@ public class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public int getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(int tokens) {
+        this.tokens = tokens;
     }
 
 

@@ -40,6 +40,11 @@ public class UserService {
         user.setEmail(email);
         user.setPassword(password);
         user.setUserType(UserType.valueOf(userType.toUpperCase()));
+        if (user.getUserType() == UserType.MANAGER) {
+            user.setTokens(0);
+        }else {
+            user.setTokens(2);
+        }
 
 
 
@@ -82,7 +87,7 @@ public class UserService {
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long userId = Long.parseLong(req.getParameter("id"));
         userDao.delete(userId);
-        req.setAttribute("successDeleteMessage", "User deleted successfully!");
+       // req.setAttribute("successDeleteMessage", "User deleted successfully!");
         resp.sendRedirect(req.getContextPath() + "/users");
     }
 }

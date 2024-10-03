@@ -2,7 +2,7 @@
 <%@ include file="../partials/navbar.jsp" %>
 <%@ include file="../partials/sidebar.jsp" %>
 <div class="p-4 sm:ml-64">
-<div class="max-w-sm mx-auto mt-20">
+<div class="max-w-lg mx-auto mt-20">
     <h2 class="text-center text-2xl font-bold mb-5">Update User</h2>
     <form action="/users" method="POST" class="space-y-5">
         <input type="hidden" name="id" value="${user.id}">

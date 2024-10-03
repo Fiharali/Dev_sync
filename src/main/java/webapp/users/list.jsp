@@ -6,7 +6,7 @@
 <%@ include file="../partials/navbar.jsp" %>
 <%@ include file="../partials/sidebar.jsp" %>
 <div class="p-4 sm:ml-64">
-    <div class="relative mx-auto mt-10 pt-10 overflow-x-auto">
+    <div class="relative mx-auto w-full mt-10 pt-10 overflow-x-auto">
         <table class="min-w-full mx-auto text-sm text-left mt-5 rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
@@ -16,6 +16,7 @@
                 <th scope="col" class="px-6 py-3">prenom</th>
                 <th scope="col" class="px-6 py-3">email</th>
                 <th scope="col" class="px-6 py-3">User type</th>
+                <th scope="col" class="px-6 py-3">Tokens</th>
                 <th scope="col" class="px-6 py-3">Actions</th>
             </tr>
             </thead>
@@ -44,7 +45,10 @@
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     <%= user.getUserType() %>
                 </td>
-                <td class="px-6 py-4 flex">
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <%= user.getTokens()     %>
+                </td>
+                <td class="px- py-4 flex">
                     <form action="/users" method="post" class="mr-2">
                         <input type="hidden" name="id" value="<%= user.getId() %>">
                         <input type="hidden" name="_method" value="DELETE">
