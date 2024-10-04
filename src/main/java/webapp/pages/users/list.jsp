@@ -6,7 +6,14 @@
 <%@ include file="../partials/navbar.jsp" %>
 <%@ include file="../partials/sidebar.jsp" %>
 <div class="p-4 sm:ml-64">
+
     <div class="relative mx-auto w-full mt-10 pt-10 overflow-x-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-indigo-800">Users</h2>
+            <a   href="/users?action=create"    class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform ">
+                <i class="fas fa-plus mr-2"></i>Add User
+            </a>
+        </div>
         <table class="min-w-full mx-auto text-sm text-left mt-5 rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>

@@ -3,27 +3,15 @@
         <ul class="space-y-2 font-medium">
             <li>
                 <a href="/users" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
-                    <i class="fa-duotone fa-solid fa-user-plus w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
-                    <span class="ms-3">All Users </span>
-                </a>
-            </li>
-            <li>
-                <a href="/users?action=create" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
                     <i class="fa-duotone fa-solid fa-users w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Create User</span>
+                    <span class="ms-3"> Users </span>
                 </a>
             </li>
             <hr>
             <li>
                 <a href="/tasks" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
                     <i class="fa-duotone fa-solid fa-list-check w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
-                    <span class="ms-3">All Tasks </span>
-                </a>
-            </li>
-            <li>
-                <a href="/tasks?action=create" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
-                    <i class="fa-duotone fa-solid fa-users w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Create task</span>
+                    <span class="ms-3"> Tasks </span>
                 </a>
             </li>
 
