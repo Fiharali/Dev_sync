@@ -1,4 +1,4 @@
-package com.devsync.servlets.users;
+package com.devsync.servlets;
 
 import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.User;
@@ -29,7 +29,7 @@ public class UserServlet extends HttpServlet {
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 String action = req.getParameter("action");
                 if ("create".equals(action)) {
-                        req.getRequestDispatcher("/users/create.jsp").forward(req, resp);
+                        req.getRequestDispatcher("pages/users/create.jsp").forward(req, resp);
                 } else {
                         userService.findAll(req, resp);
                 }

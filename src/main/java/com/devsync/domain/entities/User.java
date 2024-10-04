@@ -3,6 +3,8 @@ package com.devsync.domain.entities;
 import com.devsync.domain.enums.UserType;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "users")
@@ -35,6 +37,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "usertype")
     private UserType userType;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks;
+
+
 
     public User() {}
 
@@ -111,6 +119,14 @@ public class User {
 
     public void setTokens(int tokens) {
         this.tokens = tokens;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
 

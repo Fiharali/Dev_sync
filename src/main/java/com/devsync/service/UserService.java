@@ -21,7 +21,7 @@ public class UserService {
     public void findAll(HttpServletRequest req, HttpServletResponse resp) throws  ServletException ,IOException{
         List<User> users = userDao.findAll();
         req.setAttribute("users", users);
-        req.getRequestDispatcher("/users/list.jsp").forward(req, resp);
+        req.getRequestDispatcher("/pages/users/list.jsp").forward(req, resp);
     }
 
     public void save(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -57,7 +57,7 @@ public class UserService {
         User user = userDao.findById(userId);
         if (user != null) {
             req.setAttribute("user", user);
-            req.getRequestDispatcher("/users/update.jsp").forward(req, resp);
+            req.getRequestDispatcher("/pages/users/update.jsp").forward(req, resp);
         }
     }
 
