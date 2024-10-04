@@ -3,6 +3,8 @@ package com.devsync.domain.entities;
 import com.devsync.domain.enums.UserType;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "users")
@@ -25,6 +27,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "tokens")
+    private int tokens;
+
     @Column(name = "username")
     private String username;
 
@@ -33,9 +38,15 @@ public class User {
     @Column(name = "usertype")
     private UserType userType;
 
+
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks;
+
+
+
     public User() {}
 
-    public User(Long id, String name, String prenom, String email, String password, String username , UserType userType) {
+    public User(Long id, String name, String prenom, String email, String password, String username , UserType userType,int tokens) {
         this.id = id;
         this.name = name;
         this.prenom = prenom;
@@ -43,6 +54,7 @@ public class User {
         this.password = password;
         this.username = username;
         this.userType = userType;
+        this.tokens = tokens;
     }
 
     public Long getId() {
@@ -99,6 +111,22 @@ public class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public int getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(int tokens) {
+        this.tokens = tokens;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
 
