@@ -11,7 +11,7 @@
             <i class="fas fa-plus mr-2"></i>Add Task
         </a>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-6">
         <div class="bg-gray-100 p-4 rounded-lg">
             <h3 class="text-lg font-medium mb-4 text-gray-700">To Do</h3>
             <div class="space-y-3" id="todo-column">

@@ -37,7 +37,7 @@ public class TaskService {
         String title = req.getParameter("title");
         String description = req.getParameter("description");
         TaskStatus status = TaskStatus.valueOf(req.getParameter("status"));
-        LocalDate dateCreated = LocalDate.parse(req.getParameter("dateCreated"));
+        LocalDate dateCreated =  LocalDate.now();
         LocalDate dateEnd = LocalDate.parse(req.getParameter("dateEnd"));
         Long userId = Long.parseLong(req.getParameter("userId"));
 
@@ -50,7 +50,8 @@ public class TaskService {
         task.setDateCreated(dateCreated);
         task.setDateEnd(dateEnd);
         task.setUser(user);
-       // user.getTasks().add(task);
+
+
         taskDao.save(task);
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
