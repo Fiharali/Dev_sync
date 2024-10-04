@@ -45,7 +45,11 @@
                     <%= task.getDateEnd() %>
                 </td>
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <% if (task.getUser() != null) { %>
                     <%= task.getUser().getUsername() %>
+                    <% } else { %>
+                    No user assigned
+                    <% } %>
                 </td>
                 <td class="px-6 py-4 flex">
                     <form action="/tasks" method="post" class="mr-2">

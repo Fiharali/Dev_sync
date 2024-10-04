@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-//@WebServlet(name = "index", urlPatterns = {"/index"})
+@WebServlet(name = "users", urlPatterns = {"/users"})
 public class UserServlet extends HttpServlet {
 
         private UserService userService;

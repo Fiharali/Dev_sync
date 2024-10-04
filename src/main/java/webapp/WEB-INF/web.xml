@@ -3,27 +3,5 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
-
-
-    <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.devsync.servlets.UserServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/users</url-pattern>
-    </servlet-mapping>
-
-
-    <servlet>
-        <servlet-name>TaskServlet</servlet-name>
-        <servlet-class>com.devsync.servlets.TaskServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>TaskServlet</servlet-name>
-        <url-pattern>/tasks</url-pattern>
-    </servlet-mapping>
-
+    <display-name>webapp</display-name>
 </web-app>

@@ -16,12 +16,15 @@ import java.util.List;
 public class TaskService {
 
     private TaskDao taskDao;
-    private UserDao userDao;
+  //  private UserDao userDao;
+    private UserService userService;
 
     public TaskService() {
         taskDao = new TaskDao();
-        userDao = new UserDao();
+       // userDao = new UserDao();
+        userService = new UserService();
     }
+
 
     public void findAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Task> tasks = taskDao.findAll();
@@ -38,7 +41,7 @@ public class TaskService {
         LocalDate dateEnd = LocalDate.parse(req.getParameter("dateEnd"));
         Long userId = Long.parseLong(req.getParameter("userId"));
 
-        User user = userDao.findById(userId);
+        User user = userService.findById(userId);
 
         Task task = new Task();
         task.setTitle(title);
@@ -47,7 +50,7 @@ public class TaskService {
         task.setDateCreated(dateCreated);
         task.setDateEnd(dateEnd);
         task.setUser(user);
-
+       // user.getTasks().add(task);
         taskDao.save(task);
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
@@ -70,7 +73,7 @@ public class TaskService {
         LocalDate dateEnd = LocalDate.parse(req.getParameter("dateEnd"));
         Long userId = Long.parseLong(req.getParameter("userId"));
 
-        User user = userDao.findById(userId);
+       // User user = userDao.findById(userId);
 
         Task task = new Task();
         task.setId(taskId);
@@ -79,7 +82,7 @@ public class TaskService {
         task.setStatus(status);
         task.setDateCreated(dateCreated);
         task.setDateEnd(dateEnd);
-        task.setUser(user);
+       // task.setUser(user);
 
         taskDao.update(task);
         resp.sendRedirect(req.getContextPath() + "/tasks");
@@ -89,5 +92,11 @@ public class TaskService {
         Long taskId = Long.parseLong(req.getParameter("id"));
         taskDao.delete(taskId);
         resp.sendRedirect(req.getContextPath() + "/tasks");
+    }
+
+    public void displayCreateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("users", userService.getUserWhoHaveUserTypeUser());
+        req.getRequestDispatcher("pages/tasks/create.jsp").forward(req, resp);
+
     }
 }

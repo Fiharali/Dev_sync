@@ -24,7 +24,7 @@ public class TaskServlet extends HttpServlet {
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 String action = req.getParameter("action");
                 if ("create".equals(action)) {
-                        req.getRequestDispatcher("pages/tasks/create.jsp").forward(req, resp);
+                        taskService.displayCreateForm(req, resp);
                 } else {
                         taskService.findAll(req, resp);
                 }
