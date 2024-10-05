@@ -4,13 +4,16 @@ import com.devsync.dao.TaskDao;
 import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.Task;
 import com.devsync.domain.entities.User;
+import com.devsync.domain.entities.Tag;
 import com.devsync.domain.enums.TaskStatus;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskService {
@@ -18,11 +21,12 @@ public class TaskService {
     private TaskDao taskDao;
   //  private UserDao userDao;
     private UserService userService;
+    private TagService tagService;
 
     public TaskService() {
         taskDao = new TaskDao();
-       // userDao = new UserDao();
         userService = new UserService();
+        tagService = new TagService();
     }
 
 
@@ -50,6 +54,21 @@ public class TaskService {
         task.setDateCreated(dateCreated);
         task.setDateEnd(dateEnd);
         task.setUser(user);
+
+        String[] tagIds = req.getParameterValues("tags[]");
+        List<Tag> selectedTags = new ArrayList<>();
+        if (tagIds != null) {
+            for (String tagId : tagIds) {
+                Long id = Long.parseLong(tagId);
+                Tag tag = tagService.findById(id);
+                selectedTags.add(tag);
+            }
+        }
+
+
+
+
+        task.setTags(selectedTags);
 
 
         taskDao.save(task);
@@ -97,6 +116,7 @@ public class TaskService {
 
     public void displayCreateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("users", userService.getUserWhoHaveUserTypeUser());
+        req.setAttribute("tags", tagService.getAllTags());
         req.getRequestDispatcher("pages/tasks/create.jsp").forward(req, resp);
 
     }
