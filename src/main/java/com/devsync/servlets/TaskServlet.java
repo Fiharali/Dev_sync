@@ -25,9 +25,9 @@ public class TaskServlet extends HttpServlet {
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 if (!SessionUtil.isUserLoggedIn(req, resp)) {
+                        resp.sendRedirect(req.getContextPath() + "/login");
                         return;
                 }
-
                 String action = req.getParameter("action");
                 if ("create".equals(action)) {
                         taskService.displayCreateForm(req, resp);
@@ -38,7 +38,8 @@ public class TaskServlet extends HttpServlet {
 
         @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                if (!SessionUtil.isUserLoggedIn(req, resp)) {
+                if (SessionUtil.isUserLoggedIn(req, resp)) {
+                        resp.sendRedirect(req.getContextPath() + "/login");
                         return;
                 }
                 String method = req.getParameter("_method");

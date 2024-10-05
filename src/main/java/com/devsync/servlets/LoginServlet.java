@@ -32,7 +32,10 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        if (SessionUtil.isUserLoggedIn(req, resp)) {
+            resp.sendRedirect(req.getContextPath() + "/users");
+            return;
+        }
             req.getRequestDispatcher("pages/auth/login.jsp").forward(req, resp);
 
     }
@@ -42,7 +45,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String method = req.getParameter("_method");
-        if (  method.equals("DESTROY")) {
+        if ( method.equals("DESTROY")) {
             req.getSession().invalidate();
             resp.sendRedirect(req.getContextPath() + "/login");
         } else {

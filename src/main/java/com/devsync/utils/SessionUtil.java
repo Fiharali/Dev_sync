@@ -9,10 +9,8 @@ public class SessionUtil {
 
     public static boolean isUserLoggedIn(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return false;
-        }
-        return true;
+        return session != null && session.getAttribute("user") != null;
     }
+
+
 }
