@@ -44,6 +44,9 @@ public class TaskServlet extends HttpServlet {
                         case "PUT":
                                 taskService.update(req, resp);
                                 break;
+                        case "UPDATE_STATUS":
+                                taskService.updateStatus(req, resp);
+                                break;
                         default:
                                 taskService.save(req, resp);
                                 break;

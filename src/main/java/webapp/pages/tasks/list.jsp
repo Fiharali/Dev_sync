@@ -16,17 +16,17 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            <!-- To Do Column -->
+
             <div class="bg-gray-100 p-4 rounded-lg">
                 <h3 class="text-lg font-medium mb-4 text-gray-700">To Do</h3>
-                <div class="space-y-3" id="todo-column">
+                <div class="space-y-3" id="todo-column" data-status="TODO" >
                     <%
                         List<Task> tasks = (List<Task>) request.getAttribute("tasks");
                         if (tasks != null) {
                             for (Task task : tasks) {
                                 if (task.getStatus() == TaskStatus.TODO) {
                     %>
-                    <div class="bg-white p-3 rounded shadow">
+                    <div class="bg-white p-3 rounded shadow" draggable="true" data-task-id="<%= task.getId() %>" >
                         <h4 class="font-medium"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">
@@ -50,13 +50,13 @@
             </div>
             <div class="bg-gray-100 p-4 rounded-lg">
                 <h3 class="text-lg font-medium mb-4 text-gray-700">In Progress</h3>
-                <div class="space-y-3" id="inprogress-column">
+                <div class="space-y-3"  id="inprogress-column" data-status="IN_PROGRESS" >
                     <%
                         if (tasks != null) {
                             for (Task task : tasks) {
                                 if (task.getStatus() == TaskStatus.IN_PROGRESS) {
                     %>
-                    <div class="bg-white p-3 rounded shadow">
+                    <div class="bg-white p-3 rounded shadow" draggable="true" data-task-id="<%= task.getId() %>">
                         <h4 class="font-medium"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">
@@ -79,16 +79,16 @@
                 </div>
             </div>
 
-            <!-- Done Column -->
-            <div class="bg-gray-100 p-4 rounded-lg">
+
+            <div class="bg-gray-100 p-4 rounded-lg" >
                 <h3 class="text-lg font-medium mb-4 text-gray-700">Done</h3>
-                <div class="space-y-3" id="done-over">
+                <div class="space-y-3" id="done-column" data-status="DONE" >
                     <%
                         if (tasks != null) {
                             for (Task task : tasks) {
                                 if (task.getStatus() == TaskStatus.DONE) {
                     %>
-                    <div class="bg-white p-3 rounded shadow">
+                    <div class="bg-white p-3 rounded shadow" draggable="true" data-task-id="<%= task.getId() %>">
                         <h4 class="font-medium"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">
@@ -111,16 +111,16 @@
                 </div>
             </div>
 
-            <!-- Overdue Column -->
-            <div class="bg-gray-100 p-4 rounded-lg">
+
+            <div class="bg-gray-100 p-4 rounded-lg" id="overdue-column" >
                 <h3 class="text-lg font-medium mb-4 text-gray-700">Overdue</h3>
-                <div class="space-y-3" id="done-column">
+                <div class="space-y-3" id="overdue-column" data-status="OVERDUE" >
                     <%
                         if (tasks != null) {
                             for (Task task : tasks) {
                                 if (task.getStatus() == TaskStatus.OVERDUE) {
                     %>
-                    <div class="bg-white p-3 rounded shadow">
+                    <div class="bg-white p-3 rounded shadow" draggable="true" data-task-id="<%= task.getId() %>" >
                         <h4 class="font-medium"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">
@@ -146,3 +146,32 @@
         </div>
     </div>
 </div>
+<script>
+    document.querySelectorAll('.space-y-3').forEach(function(column) {
+        new Sortable(column, {
+            group: 'tasks',
+            animation: 150,
+            onEnd: function(evt) {
+                let draggedTaskId = evt.item.dataset.taskId;
+                let newStatus = evt.from.dataset.status;
+                let columnElement = evt.item.closest('.space-y-3');
+                newStatus = columnElement.dataset.status;
+
+
+                fetch("/tasks?_method=UPDATE_STATUS&taskId="+ draggedTaskId +"&newStatus="+newStatus, {
+                    method: 'POST',
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Task status updated successfully');
+                        } else {
+                            console.error('Failed to update task status');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
+    });
+</script>
+</body>
+</html>

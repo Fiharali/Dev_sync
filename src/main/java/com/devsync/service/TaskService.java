@@ -120,4 +120,14 @@ public class TaskService {
         req.getRequestDispatcher("pages/tasks/create.jsp").forward(req, resp);
 
     }
+
+    public void updateStatus(HttpServletRequest req, HttpServletResponse resp) {
+        Long taskId = Long.parseLong(req.getParameter("taskId"));
+        Task task = taskDao.findById(taskId);
+        if (task != null) {
+            TaskStatus status = TaskStatus.valueOf(req.getParameter("newStatus"));
+            task.setStatus(status);
+            taskDao.update(task);
+        }
+    }
 }
