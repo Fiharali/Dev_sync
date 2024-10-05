@@ -3,6 +3,7 @@ package com.devsync.servlets;
 import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.User;
 import com.devsync.service.UserService;
+import com.devsync.utils.SessionUtil;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
@@ -30,6 +32,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
             req.getRequestDispatcher("pages/auth/login.jsp").forward(req, resp);
 
     }
@@ -67,6 +70,15 @@ public class LoginServlet extends HttpServlet {
             return user;
         }
         return null;
+    }
+
+    public void  checkIfUserLoggedIn(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+
+        }
+
     }
 
 }

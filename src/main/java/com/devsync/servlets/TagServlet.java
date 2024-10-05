@@ -2,6 +2,7 @@ package com.devsync.servlets;
 
 import com.devsync.domain.entities.Tag;
 import com.devsync.service.TagService;
+import com.devsync.utils.SessionUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +24,9 @@ public class TagServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!SessionUtil.isUserLoggedIn(req, resp)) {
+            return;
+        }
         String action = req.getParameter("action");
         if ("create".equals(action)) {
             req.getRequestDispatcher("pages/tags/create.jsp").forward(req, resp);
@@ -33,6 +37,9 @@ public class TagServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!SessionUtil.isUserLoggedIn(req, resp)) {
+            return;
+        }
         String method = req.getParameter("_method");
 
         switch (method) {
