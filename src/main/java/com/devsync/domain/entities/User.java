@@ -2,6 +2,7 @@ package com.devsync.domain.entities;
 
 import com.devsync.domain.enums.UserType;
 import jakarta.persistence.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
@@ -93,9 +94,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+
 
     public String getUsername() {
         return username;
@@ -127,6 +126,14 @@ public class User {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public void setPassword(String password) {
+        this.password = hashPassword(password);
+    }
+
+    private String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
 

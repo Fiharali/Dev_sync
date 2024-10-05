@@ -2,10 +2,7 @@ package com.devsync.dao;
 
 
 import com.devsync.domain.entities.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -70,4 +67,16 @@ public class UserDao {
         em.close();
         return users;
     }
+
+    public User findByEmail(String email) {
+        try {
+            EntityManager em = emf.createEntityManager();
+            return em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 }

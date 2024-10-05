@@ -26,7 +26,7 @@
                             for (Task task : tasks) {
                                 if (task.getStatus() == TaskStatus.TODO) {
                     %>
-                    <div class="bg-white p-3 rounded shadow" draggable="true" data-task-id="<%= task.getId() %>" >
+                    <div class="bg-white p-3 rounded shadow selected"  draggable="true" data-task-id="<%= task.getId() %>" >
                         <h4 class="font-medium"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">
@@ -56,7 +56,7 @@
                             for (Task task : tasks) {
                                 if (task.getStatus() == TaskStatus.IN_PROGRESS) {
                     %>
-                    <div class="bg-white p-3 rounded shadow" draggable="true" data-task-id="<%= task.getId() %>">
+                    <div class="bg-white p-3 rounded shadow selected" draggable="true" data-task-id="<%= task.getId() %>">
                         <h4 class="font-medium"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">
@@ -88,7 +88,7 @@
                             for (Task task : tasks) {
                                 if (task.getStatus() == TaskStatus.DONE) {
                     %>
-                    <div class="bg-white p-3 rounded shadow" draggable="true" data-task-id="<%= task.getId() %>">
+                    <div class="bg-white p-3 rounded shadow selected" draggable="true" data-task-id="<%= task.getId() %>">
                         <h4 class="font-medium"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">
@@ -112,7 +112,7 @@
             </div>
 
 
-            <div class="bg-gray-100 p-4 rounded-lg" id="overdue-column" >
+            <div class="bg-gray-100 p-4 rounded-lg"  >
                 <h3 class="text-lg font-medium mb-4 text-gray-700">Overdue</h3>
                 <div class="space-y-3" id="overdue-column" data-status="OVERDUE" >
                     <%
@@ -120,7 +120,7 @@
                             for (Task task : tasks) {
                                 if (task.getStatus() == TaskStatus.OVERDUE) {
                     %>
-                    <div class="bg-white p-3 rounded shadow" draggable="true" data-task-id="<%= task.getId() %>" >
+                    <div class="bg-white p-3 rounded shadow selected" draggable="true" data-task-id="<%= task.getId() %>" >
                         <h4 class="font-medium"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">
@@ -150,7 +150,11 @@
     document.querySelectorAll('.space-y-3').forEach(function(column) {
         new Sortable(column, {
             group: 'tasks',
-            animation: 150,
+            multiDrag: true, // Enable multi-drag
+            selectedClass: 'selected', // The class applied to the selected items
+            fallbackTolerance: 3, // So that we can select items on mobile
+            ghostClass: 'blue-background-class',
+            animation: 200,
             onEnd: function(evt) {
                 let draggedTaskId = evt.item.dataset.taskId;
                 let newStatus = evt.from.dataset.status;
