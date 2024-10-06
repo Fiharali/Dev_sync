@@ -2,6 +2,7 @@ package com.devsync.servlets;
 
 import com.devsync.domain.entities.Tag;
 import com.devsync.service.TagService;
+import com.devsync.utils.CheckAccess;
 import com.devsync.utils.SessionUtil;
 
 import javax.servlet.ServletException;
@@ -24,8 +25,7 @@ public class TagServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!SessionUtil.isUserLoggedIn(req, resp)) {
-            resp.sendRedirect(req.getContextPath() + "/login");
+        if (!CheckAccess.checkAccess(req, resp)) {
             return;
         }
         String action = req.getParameter("action");
@@ -38,10 +38,10 @@ public class TagServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!SessionUtil.isUserLoggedIn(req, resp)) {
-            resp.sendRedirect(req.getContextPath() + "/login");
+        if (!CheckAccess.checkAccess(req, resp)) {
             return;
         }
+
         String method = req.getParameter("_method");
 
         switch (method) {

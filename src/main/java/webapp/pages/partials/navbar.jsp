@@ -41,15 +41,15 @@
                     </div>
                     <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user">
                         <%
-                            User user = (User) session.getAttribute("user");
-                            if (user != null) {
+                            User SessionUser = (User) session.getAttribute("user");
+                            if (SessionUser != null) {
                         %>
                         <div class="px-4 py-3" role="none">
                             <p class="text-sm text-gray-900" role="none">
-                                <%= user.getUsername() %>
+                                <%= SessionUser.getUsername() %>
                             </p>
                             <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                                <%= user.getEmail() %>
+                                <%= SessionUser.getEmail() %>
                             </p>
                         </div>
                         <%

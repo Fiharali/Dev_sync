@@ -33,7 +33,10 @@
                         <option value="">Select a user</option>
                         <% List<User> users = (List<User>) request.getAttribute("users");
                             for (User user : users) { %>
-                        <option value="<%= user.getId() %>"><%= user.getUsername() %> --> tokens: <%= user.getTokens() %></option>
+                        <img class="w-8 h-8 rounded-full" src="pages/assets/images/me.png" alt="user photo">
+                        <option value="<%= user.getId() %>">
+                            <%= user.getUsername() %> --> tokens: <%= user.getTokens() %>
+                        </option>
                         <% } %>
                     </select>
                 </div>
