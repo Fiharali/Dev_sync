@@ -2,6 +2,8 @@ package com.devsync.domain.entities;
 
 import com.devsync.domain.enums.UserType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
@@ -39,7 +41,7 @@ public class User {
     @Column(name = "usertype")
     private UserType userType;
 
-
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
 

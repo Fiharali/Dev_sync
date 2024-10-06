@@ -33,11 +33,10 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (SessionUtil.isUserLoggedIn(req, resp)) {
-            resp.sendRedirect(req.getContextPath() + "/users");
+            resp.sendRedirect(req.getContextPath() + "/tasks");
             return;
         }
             req.getRequestDispatcher("pages/auth/login.jsp").forward(req, resp);
-
     }
 
 
@@ -69,19 +68,15 @@ public class LoginServlet extends HttpServlet {
 
     public User authenticate(String email, String password) {
         User user = userDao.findByEmail(email);
-        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
-            return user;
+        if (user != null) {
+            if (BCrypt.checkpw(password, user.getPassword())) {
+                return user;
+            }
         }
         return null;
     }
 
-    public void  checkIfUserLoggedIn(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
 
-        }
 
-    }
 
 }

@@ -39,6 +39,7 @@ public class Task {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "task_tags",

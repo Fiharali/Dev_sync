@@ -1,4 +1,4 @@
-
+<%@ page import="com.devsync.domain.entities.User" %>
 
 <html>
 <head>
@@ -40,28 +40,27 @@
                         </button>
                     </div>
                     <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user">
+                        <%
+                            User user = (User) session.getAttribute("user");
+                            if (user != null) {
+                        %>
                         <div class="px-4 py-3" role="none">
                             <p class="text-sm text-gray-900" role="none">
-                                Neil Sims
+                                <%= user.getUsername() %>
                             </p>
                             <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                                neil.sims@flowbite.com
+                                <%= user.getEmail() %>
                             </p>
                         </div>
+                        <%
+                            }
+                        %>
                         <ul class="py-1" role="none">
-                            <li>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Earnings</a>
-                            </li>
+
                             <li>
                                 <form action="/login" method="POST">
                                     <input  type="hidden" name="_method" value="DESTROY"/>
-                                    <input type="submit"  class="text-left  w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" />
+                                    <input type="submit"  value="LogOut" class="text-left  w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" />
 
                                 </form>
                             </li>

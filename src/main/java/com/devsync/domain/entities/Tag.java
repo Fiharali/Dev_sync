@@ -1,6 +1,8 @@
 package com.devsync.domain.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.Set;
@@ -16,6 +18,7 @@ public class Tag {
     @Column(name = "name", unique = true)
     private String name;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "tags")
     private List<Task> tasks;
 

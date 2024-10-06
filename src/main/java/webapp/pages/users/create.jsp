@@ -54,7 +54,7 @@
         const form = document.querySelector('form');
 
         form.addEventListener('submit', function (event) {
-            let isValid = true; // Flag to track validation
+            let isValid = true;
 
             const username = document.getElementById('username');
             const name = document.getElementById('name');
@@ -86,7 +86,7 @@
                 isValid = false;
             }
 
-            if (password.value.trim() === '' || password.value.trim().length < 6) {
+            if (password.value.trim() === '' || password.value.trim().length < 7) {
                 showError(password, 'Password must be at least 6 characters long.');
                 isValid = false;
             }
