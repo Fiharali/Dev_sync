@@ -62,4 +62,22 @@ public class UserDao {
         em.close();
         return user;
     }
+
+    public List<User> getUserWhoHaveUserTypeUser() {
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userType = 'USER'", User.class);
+        List<User> users = query.getResultList();
+        em.close();
+        return users;
+    }
+
+    public User findByEmail(String email) {
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+        query.setParameter("email", email);
+        List<User> users = query.getResultList();
+        em.close();
+        return users.isEmpty() ? null : users.get(0);
+    }
+
 }
