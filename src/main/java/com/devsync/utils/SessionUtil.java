@@ -16,14 +16,13 @@ public class SessionUtil {
 
     public static boolean isManager(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
-        if (session != null) {
+       // if (session != null) {
             User user = (User) session.getAttribute("user");
-            if (user != null) {
-
-                return "MANAGER".equals(user.getUserType());
-            }
-        }
-        return false;
+        //    if (user != null) {
+               return  "MANAGER".equals(user.getUserType().name());
+         //   }
+       // }
+       // return false;
     }
 
 

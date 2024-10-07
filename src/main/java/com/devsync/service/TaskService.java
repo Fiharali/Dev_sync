@@ -19,7 +19,7 @@ import java.util.List;
 public class TaskService {
 
     private TaskDao taskDao;
-  //  private UserDao userDao;
+   private UserDao userDao;
     private UserService userService;
     private TagService tagService;
 
@@ -27,12 +27,15 @@ public class TaskService {
         taskDao = new TaskDao();
         userService = new UserService();
         tagService = new TagService();
+        userDao = new UserDao();
     }
 
 
     public void findAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Task> tasks = taskDao.findAll();
+        List<User> users = userDao.findAll();
         req.setAttribute("tasks", tasks);
+        req.setAttribute("users", users);
         req.getRequestDispatcher("/pages/tasks/list.jsp").forward(req, resp);
     }
 
@@ -127,6 +130,18 @@ public class TaskService {
         if (task != null) {
             TaskStatus status = TaskStatus.valueOf(req.getParameter("newStatus"));
             task.setStatus(status);
+            taskDao.update(task);
+        }
+    }
+
+    public void updateUser(HttpServletRequest req, HttpServletResponse resp) {
+
+        Long taskId = Long.parseLong(req.getParameter("task_id"));
+        Long userId = Long.parseLong(req.getParameter("user_id"));
+        Task task = taskDao.findById(taskId);
+        User user = userDao.findById(userId);
+        if (task != null && user != null) {
+            task.setUser(user);
             taskDao.update(task);
         }
     }

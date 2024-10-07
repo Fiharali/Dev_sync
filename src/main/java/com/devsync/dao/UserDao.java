@@ -13,10 +13,11 @@ public class UserDao {
 
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
 
-    EntityManager em = emf.createEntityManager();
+
 
 
     public List<User> findAll() {
+        EntityManager em = emf.createEntityManager();
         TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
         List<User> users = query.getResultList();
         em.close();
@@ -25,6 +26,7 @@ public class UserDao {
     }
 
     public void save(User user) {
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(user);
         em.getTransaction().commit();
@@ -33,6 +35,7 @@ public class UserDao {
 
 
     public void delete(Long id) {
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
         User user = em.find(User.class, id);
@@ -46,6 +49,7 @@ public class UserDao {
 
 
     public void update(User user) {
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.merge(user);
         em.getTransaction().commit();
@@ -53,12 +57,14 @@ public class UserDao {
     }
 
     public User findById(Long userId) {
+        EntityManager em = emf.createEntityManager();
         User user = em.find(User.class, userId);
         em.close();
         return user;
     }
 
     public List<User> getUserWhoHaveUserTypeUser() {
+        EntityManager em = emf.createEntityManager();
         TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userType = 'USER'", User.class);
         List<User> users = query.getResultList();
         em.close();
@@ -66,6 +72,7 @@ public class UserDao {
     }
 
     public User findByEmail(String email) {
+        EntityManager em = emf.createEntityManager();
         TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
         query.setParameter("email", email);
         List<User> users = query.getResultList();

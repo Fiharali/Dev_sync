@@ -13,9 +13,8 @@ public class TaskDao {
 
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
 
-    EntityManager em = emf.createEntityManager();
-
     public List<Task> findAll() {
+        EntityManager em = emf.createEntityManager();
         TypedQuery<Task> query = em.createQuery("SELECT t FROM Task t", Task.class);
         List<Task> tasks = query.getResultList();
         em.close();
@@ -23,7 +22,7 @@ public class TaskDao {
     }
 
     public void save(Task task) {
-
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(task);
         em.getTransaction().commit();
@@ -31,7 +30,7 @@ public class TaskDao {
     }
 
     public void delete(Long id) {
-
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
         Task task = em.find(Task.class, id);
@@ -44,6 +43,7 @@ public class TaskDao {
     }
 
     public void update(Task task) {
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.merge(task);
         em.getTransaction().commit();
@@ -51,6 +51,7 @@ public class TaskDao {
     }
 
     public Task findById(Long taskId) {
+        EntityManager em = emf.createEntityManager();
         Task task = em.find(Task.class, taskId);
         em.close();
         return task;

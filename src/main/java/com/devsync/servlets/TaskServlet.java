@@ -38,10 +38,7 @@ public class TaskServlet extends HttpServlet {
 
         @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                if (SessionUtil.isUserLoggedIn(req, resp)) {
-                        resp.sendRedirect(req.getContextPath() + "/login");
-                        return;
-                }
+
                 String method = req.getParameter("_method");
 
                 switch (method) {
@@ -56,6 +53,9 @@ public class TaskServlet extends HttpServlet {
                                 break;
                         case "UPDATE_STATUS":
                                 taskService.updateStatus(req, resp);
+                                break;
+                        case "UPDATE_USER":
+                                taskService.updateUser(req, resp);
                                 break;
                         default:
                                 taskService.save(req, resp);
