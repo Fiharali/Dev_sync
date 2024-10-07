@@ -21,54 +21,58 @@
 
             <div class="bg-gray-100 p-4 rounded-lg">
                 <h3 class="text-lg font-medium mb-4 text-gray-700">To Do</h3>
-                <div class="space-y-3" id="todo-column" data-status="TODO" >
+                <div class="space-y-3" id="todo-column" data-status="TODO">
                     <%
                         List<Task> tasks = (List<Task>) request.getAttribute("tasks");
                         if (tasks != null) {
                             for (Task task : tasks) {
                                 if (task.getStatus() == TaskStatus.TODO) {
+                                    LocalDate now = LocalDate.now();
+                                    LocalDate taskEndDate = task.getDateEnd();
+                                    boolean isPastEndDate = now.isAfter(taskEndDate);
+                                    boolean isNearEndDate = now.isAfter(taskEndDate.minusDays(3));
                     %>
-                    <div class=" p-3 rounded shadow  bg-white <%=LocalDate.now().isAfter(task.getDateEnd()) ? " border-2 border-red-700" : "selected"%> " draggable="<%=task.getDateEnd().isBefore(LocalDate.now()) ? "true" : "false"%> " data-task-id="<%= task.getId() %>" >
-                        <h4 class="font-medium <%=task.getDateEnd().isBefore(LocalDate.now()) ? " text-red-700" : ""%>"><%= task.getTitle() %></h4>
+                    <div class="p-3 rounded shadow bg-white border-t-2 <%= isPastEndDate ? "border-red-700" : isNearEndDate ? "border-yellow-200" : "border-blue-700" %>"
+                         draggable="<%= isPastEndDate ? "false" : "true" %>"
+                         data-task-id="<%= task.getId() %>">
+                        <h4 class="font-medium <%= isPastEndDate ? "text-red-700" : "" %>"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">
-                            <button data-modal-target="assigned-modal-<%= task.getId() %>" data-modal-toggle="assigned-modal-<%= task.getId() %>" class="block text-white " type="button">
-                                <div class="flex ">
+                            <button data-modal-target="assigned-modal-<%= task.getId() %>" data-modal-toggle="assigned-modal-<%= task.getId() %>" class="block text-white" type="button">
+                                <div class="flex">
                                     <img src="pages/assets/images/me.png" alt="Assignee" class="w-6 h-6 rounded-full bg-gray-300">
                                     <span class="ml-2 text-xs text-gray-500"><%= task.getUser().getUsername() %></span>
                                 </div>
                             </button>
-                            <div id="assigned-modal-<%= task.getId() %>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-40 right-0 left-0 z-50 justify-center items-center w-full  max-h-full">
-                                <div class="relative p-4 w-full max-w-md max-h-full">
+                            <div id="assigned-modal-<%= task.getId() %>" tabindex="-1" class="hidden fixed top-40 right-0 left-0 z-50 justify-center items-center w-full max-h-full">
+                                <div class="relative p-4 w-full max-w-md">
                                     <div class="relative bg-white rounded-lg">
-                                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                                            <h3 class="text-xl font-semibold text-gray-900 ">
-                                                Assigned To:
-                                            </h3>
-                                            <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-hide="assigned-modal-<%= task.getId() %>">
-                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                                            <h3 class="text-xl font-semibold text-gray-900">Assigned To:</h3>
+                                            <button type="button" class="end-2.5 text-gray-400 hover:bg-gray-200 rounded-lg text-sm w-8 h-8" data-modal-hide="assigned-modal-<%= task.getId() %>">
+                                                <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                                 </svg>
                                                 <span class="sr-only">Close modal</span>
                                             </button>
                                         </div>
                                         <div class="p-4 md:p-5">
-                                            <form class="space-y-4" action="/tasks" method="post" >
-                                                <input type="hidden" value="UPDATE_USER" name="_method">
-                                                <input type="hidden" value="<%= task.getId() %>" name="task_id">
-
-                                                <div class="">
-                                                    <select id=" " name="user_id" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                                        <% List<User> users = (List<User>) request.getAttribute("users");
-                                                            for (User user : users) { %>
-                                                        <option value="<%= user.getId() %>"    <%= user.getId() == task.getUser().getId() ? "selected" : ""%> >
+                                            <form class="space-y-4" action="/tasks" method="post">
+                                                <input type="hidden" name="_method" value="UPDATE_USER">
+                                                <input type="hidden" name="task_id" value="<%= task.getId() %>">
+                                                <div>
+                                                    <select name="user_id" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                                                        <%
+                                                            List<User> users = (List<User>) request.getAttribute("users");
+                                                            for (User user : users) {
+                                                        %>
+                                                        <option value="<%= user.getId() %>" <%= user.getId() == task.getUser().getId() ? "selected" : "" %> >
                                                             <%= user.getUsername() %> --- tokens: <%= user.getTokens() %>
                                                         </option>
                                                         <% } %>
                                                     </select>
                                                 </div>
-                                                <button type="submit" value="Assign" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full">Create</button>
-
+                                                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm px-5 py-2.5 text-center w-full">Assign</button>
                                             </form>
                                         </div>
                                     </div>
@@ -76,9 +80,11 @@
                             </div>
                         </div>
                         <div class="ml-2 space-x-1 mt-2">
-                            <% List<Tag> tags = task.getTags();
+                            <%
+                                List<Tag> tags = task.getTags();
                                 if (tags != null && !tags.isEmpty()) {
-                                    for (Tag tag : tags) { %>
+                                    for (Tag tag : tags) {
+                            %>
                             <span class="inline-block bg-blue-200 text-blue-800 text-sm px-2 rounded-full"><%= tag.getName() %></span>
                             <% } } %>
                         </div>
@@ -89,6 +95,7 @@
                         }
                     %>
                 </div>
+
             </div>
             <div class="bg-gray-100 p-4 rounded-lg">
                 <h3 class="text-lg font-medium mb-4 text-gray-700">In Progress</h3>

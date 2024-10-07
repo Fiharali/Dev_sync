@@ -3,7 +3,7 @@
 <div class="p-4 sm:ml-64">
     <div class="max-w-xl mx-auto mt-20">
         <h2 class="text-center text-2xl font-bold mb-5">Create Tag</h2>
-        <form action="/tags" method="POST" class="space-y-5">
+        <form action="/tags" method="POST" class="space-y-5" id="form-tag">
             <input type="hidden" name="_method" value="POST" required>
 
             <div>
@@ -18,7 +18,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form');
+        const form = document.querySelector('#form-tag');
 
 
         form.addEventListener('submit', function (event) {

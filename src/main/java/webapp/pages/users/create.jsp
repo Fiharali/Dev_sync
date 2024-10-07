@@ -5,7 +5,7 @@
 <div class="p-4 sm:ml-64">
 <div class="max-w-xl mx-auto mt-20">
     <h2 class="text-center text-2xl font-bold mb-5">Register User</h2>
-    <form action="/users" method="POST" class="space-y-5">
+    <form action="/users" method="POST" id="form-user" class="space-y-5">
         <input type="hidden" name="_method" value="POST" >
 
         <div>
@@ -51,7 +51,7 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form');
+        const form = document.querySelector('#form-user');
 
         form.addEventListener('submit', function (event) {
             let isValid = true;
