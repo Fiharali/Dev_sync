@@ -26,10 +26,13 @@
                         <% } %>
                     </select>
                 </div>
+                <%
 
+                    if (SessionUser.getUserType().name() == "MANAGER") {
+                %>
                 <div class="w-1/2">
                     <label for="userId" class="block mb-2 text-sm font-medium text-gray-900">Assigned To:</label>
-                    <select id="userId" name="userId" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <select id=""  name="user_id" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">Select a user</option>
                         <% List<User> users = (List<User>) request.getAttribute("users");
                             for (User user : users) { %>
@@ -40,6 +43,16 @@
                         <% } %>
                     </select>
                 </div>
+                <% } else  {%>
+                <div class="w-1/2">
+                    <label for="userId" class="block mb-2 text-sm font-medium text-gray-900">Assigned To:</label>
+                    <select id="userId"  name="user_id" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="<%= SessionUser.getId() %>">
+                            <%= SessionUser.getUsername() %> --> tokens: <%= SessionUser.getId() %>
+                        </option>
+                    </select>
+                </div>
+                <% } %>
             </div>
 
             <div class="flex space-x-4">

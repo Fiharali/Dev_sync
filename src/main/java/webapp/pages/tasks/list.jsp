@@ -28,7 +28,7 @@
                             for (Task task : tasks) {
                                 if (task.getStatus() == TaskStatus.TODO) {
                     %>
-                    <div class=" p-3 rounded shadow  bg-white <%=task.getDateEnd().isBefore(LocalDate.now()) ? " border-2 border-red-700" : "selected"%> " draggable="<%=task.getDateEnd().isBefore(LocalDate.now()) ? "true" : "false"%> " data-task-id="<%= task.getId() %>" >
+                    <div class=" p-3 rounded shadow  bg-white <%=LocalDate.now().isAfter(task.getDateEnd()) ? " border-2 border-red-700" : "selected"%> " draggable="<%=task.getDateEnd().isBefore(LocalDate.now()) ? "true" : "false"%> " data-task-id="<%= task.getId() %>" >
                         <h4 class="font-medium <%=task.getDateEnd().isBefore(LocalDate.now()) ? " text-red-700" : ""%>"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">

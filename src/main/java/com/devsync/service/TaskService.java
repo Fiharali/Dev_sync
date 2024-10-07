@@ -46,7 +46,7 @@ public class TaskService {
         TaskStatus status = TaskStatus.valueOf(req.getParameter("status"));
         LocalDate dateCreated =  LocalDate.now();
         LocalDate dateEnd = LocalDate.parse(req.getParameter("dateEnd"));
-        Long userId = Long.parseLong(req.getParameter("userId"));
+        Long userId = Long.parseLong(req.getParameter("user_id"));
 
         User user = userService.findById(userId);
 
