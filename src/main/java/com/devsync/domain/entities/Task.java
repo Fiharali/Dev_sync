@@ -2,7 +2,11 @@ package com.devsync.domain.entities;
 
 import com.devsync.domain.enums.TaskStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -32,7 +36,19 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "task_tags",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Tag> tags;
 
     public Task() {}
 
@@ -100,6 +116,13 @@ public class Task {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
 

@@ -2,12 +2,14 @@ package com.devsync.servlets;
 
 
 import com.devsync.service.TaskService;
+import com.devsync.utils.SessionUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "taskServlet", urlPatterns = {"/tasks"})
@@ -22,9 +24,13 @@ public class TaskServlet extends HttpServlet {
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                if (!SessionUtil.isUserLoggedIn(req, resp)) {
+                        resp.sendRedirect(req.getContextPath() + "/login");
+                        return;
+                }
                 String action = req.getParameter("action");
                 if ("create".equals(action)) {
-                        req.getRequestDispatcher("pages/tasks/create.jsp").forward(req, resp);
+                        taskService.displayCreateForm(req, resp);
                 } else {
                         taskService.findAll(req, resp);
                 }
@@ -32,6 +38,7 @@ public class TaskServlet extends HttpServlet {
 
         @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
                 String method = req.getParameter("_method");
 
                 switch (method) {
@@ -44,9 +51,18 @@ public class TaskServlet extends HttpServlet {
                         case "PUT":
                                 taskService.update(req, resp);
                                 break;
+                        case "UPDATE_STATUS":
+                                taskService.updateStatus(req, resp);
+                                break;
+                        case "UPDATE_USER":
+                                taskService.updateUser(req, resp);
+                                break;
                         default:
                                 taskService.save(req, resp);
                                 break;
                 }
         }
+
+
+
 }

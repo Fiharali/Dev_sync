@@ -1,4 +1,4 @@
-
+<%@ page import="com.devsync.domain.entities.User" %>
 
 <html>
 <head>
@@ -6,11 +6,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
 </head>
 <body>
 
-<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+<nav class="fixed top-0 z-40 w-full bg-white border-b border-gray-200">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end">
@@ -34,26 +40,32 @@
                         </button>
                     </div>
                     <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user">
+                        <%
+                            User SessionUser = (User) session.getAttribute("user");
+                            if (SessionUser != null) {
+                        %>
                         <div class="px-4 py-3" role="none">
                             <p class="text-sm text-gray-900" role="none">
-                                Neil Sims
+                                <%= SessionUser.getUsername() %>
                             </p>
                             <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                                neil.sims@flowbite.com
+                                <%= SessionUser.getEmail() %>
+                            </p>
+                            <p class="text-sm font-medium text-gray-900 truncate" role="none">
+                                <%= SessionUser.getUserType() %>
                             </p>
                         </div>
+                        <%
+                            }
+                        %>
                         <ul class="py-1" role="none">
+
                             <li>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Earnings</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
+                                <form action="/login" method="POST">
+                                    <input  type="hidden" name="_method" value="DESTROY"/>
+                                    <input type="submit"  value="LogOut" class="text-left  w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" />
+
+                                </form>
                             </li>
                         </ul>
                     </div>

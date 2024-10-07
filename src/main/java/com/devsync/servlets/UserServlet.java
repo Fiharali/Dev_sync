@@ -4,6 +4,8 @@ import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.User;
 import com.devsync.domain.enums.UserType;
 import com.devsync.service.UserService;
+import com.devsync.utils.CheckAccess;
+import com.devsync.utils.SessionUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-//@WebServlet(name = "index", urlPatterns = {"/index"})
+@WebServlet(name = "users", urlPatterns = {"/users"})
 public class UserServlet extends HttpServlet {
 
         private UserService userService;
@@ -25,8 +27,12 @@ public class UserServlet extends HttpServlet {
                 userService = new UserService();
         }
 
+
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                if (!CheckAccess.checkAccess(req, resp)) {
+                        return;
+                }
                 String action = req.getParameter("action");
                 if ("create".equals(action)) {
                         req.getRequestDispatcher("pages/users/create.jsp").forward(req, resp);
@@ -38,6 +44,10 @@ public class UserServlet extends HttpServlet {
 
         @Override
         protected  void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                if (!CheckAccess.checkAccess(req, resp)) {
+                        return;
+                }
+
                 String method = req.getParameter("_method");
 
                 switch (method) {
@@ -56,6 +66,9 @@ public class UserServlet extends HttpServlet {
                 }
 
         }
+
+
+
 
 
 }

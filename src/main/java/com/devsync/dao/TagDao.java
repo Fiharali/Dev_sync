@@ -1,7 +1,6 @@
 package com.devsync.dao;
 
-import com.devsync.domain.entities.Task;
-import com.devsync.domain.enums.TaskStatus;
+import com.devsync.domain.entities.Tag;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -9,22 +8,22 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class TaskDao {
+public class TagDao {
 
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
 
-    public List<Task> findAll() {
+    public List<Tag> findAll() {
         EntityManager em = emf.createEntityManager();
-        TypedQuery<Task> query = em.createQuery("SELECT t FROM Task t", Task.class);
-        List<Task> tasks = query.getResultList();
+        TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t", Tag.class);
+        List<Tag> tags = query.getResultList();
         em.close();
-        return tasks;
+        return tags;
     }
 
-    public void save(Task task) {
+    public void save(Tag tag) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(task);
+        em.persist(tag);
         em.getTransaction().commit();
         em.close();
     }
@@ -33,31 +32,28 @@ public class TaskDao {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
-        Task task = em.find(Task.class, id);
-        if (task != null) {
-            em.remove(task);
+        Tag tag = em.find(Tag.class, id);
+        if (tag != null) {
+            em.remove(tag);
         }
 
         em.getTransaction().commit();
         em.close();
     }
 
-    public void update(Task task) {
+    public void update(Tag tag) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.merge(task);
+        em.merge(tag);
         em.getTransaction().commit();
         em.close();
     }
 
-    public Task findById(Long taskId) {
+    public Tag findById(Long tagId) {
         EntityManager em = emf.createEntityManager();
-        Task task = em.find(Task.class, taskId);
+        Tag tag = em.find(Tag.class, tagId);
         em.close();
-        return task;
+        return tag;
     }
-
-
-
 
 }

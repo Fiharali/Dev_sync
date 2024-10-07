@@ -24,6 +24,10 @@ public class UserService {
         req.getRequestDispatcher("/pages/users/list.jsp").forward(req, resp);
     }
 
+    public User findById(Long userId) {
+        return userDao.findById(userId);
+    }
+
     public void save(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         String username = req.getParameter("username");
@@ -89,5 +93,10 @@ public class UserService {
         userDao.delete(userId);
        // req.setAttribute("successDeleteMessage", "User deleted successfully!");
         resp.sendRedirect(req.getContextPath() + "/users");
+    }
+
+
+    public List<User> getUserWhoHaveUserTypeUser() {
+        return userDao.getUserWhoHaveUserTypeUser();
     }
 }
