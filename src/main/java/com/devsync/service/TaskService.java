@@ -134,7 +134,7 @@ public class TaskService {
         }
     }
 
-    public void updateUser(HttpServletRequest req, HttpServletResponse resp) {
+    public void updateUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         Long taskId = Long.parseLong(req.getParameter("task_id"));
         Long userId = Long.parseLong(req.getParameter("user_id"));
@@ -144,5 +144,7 @@ public class TaskService {
             task.setUser(user);
             taskDao.update(task);
         }
+
+        resp.sendRedirect(req.getContextPath() + "/tasks");
     }
 }
