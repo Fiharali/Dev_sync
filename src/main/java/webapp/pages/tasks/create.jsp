@@ -21,9 +21,9 @@
                     <label for="status" class="block mb-2 text-sm font-medium text-gray-900">Status:</label>
                     <select id="status" name="status" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">Select status</option>
-                        <% for (TaskStatus status : TaskStatus.values()) { %>
-                        <option value="<%= status %>"><%= status.name() %></option>
-                        <% } %>
+
+                        <option value="TODO" >ToDo</option>
+                        <option value="IN_PROGRESS" >In Progress</option>
                     </select>
                 </div>
                 <%
@@ -54,11 +54,21 @@
                 </div>
                 <% } %>
             </div>
+            <input type="text" name="createdByUser" value="<%= SessionUser.getId() %>">
 
             <div class="flex space-x-4">
                 <div class="w-1/2">
                     <label for="dateEnd" class="block mb-2 text-sm font-medium text-gray-900">Date End:</label>
                     <input type="date" id="dateEnd" name="dateEnd" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                    <%
+                        String errorMessage = (String) session.getAttribute("errorMessage");
+                        if (errorMessage != null) {
+                    %>
+                    <span class="ms-3 text-sm text-red-500  font-medium">
+                        <%= errorMessage %>
+                    </span>
+                    <% session.removeAttribute("errorMessage"); %>
+                    <% } %>
                 </div>
 
                 <div class="w-1/2">
@@ -84,16 +94,13 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('#form-taskA');
+        const form = document.querySelector('#form-task');
 
         console.log(form)
 
 
         form.addEventListener('submit', function (event) {
             let isValid = true;
-
-            event.preventDefault()
-
             const title = document.getElementById('title');
             const status = document.getElementById('status');
             const dateEnd = document.getElementById('dateEnd');
@@ -116,7 +123,7 @@
 
 
             const today = new Date().toISOString().split('T')[0];
-            if (dateEnd.value === '' || dateEnd.value < today) {
+            if (dateEnd.value === '' || dateEnd.value < today ) {
                 showError(dateEnd, 'End date must be in the future.');
                 isValid = false;
             }

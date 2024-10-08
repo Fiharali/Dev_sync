@@ -43,14 +43,27 @@ public class TaskService {
 
     public void save(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+
+        LocalDate dateEnd = LocalDate.parse(req.getParameter("dateEnd"));
+
+
+        if (dateEnd.isBefore(LocalDate.now().plusDays(3))){
+            HttpSession session = req.getSession();
+            session.setAttribute("errorMessage", "end date must be  3 days from now");
+            resp.sendRedirect(req.getContextPath() + "/tasks?action=create");
+            return;
+        }
+
         String title = req.getParameter("title");
+
         String description = req.getParameter("description");
         TaskStatus status = TaskStatus.valueOf(req.getParameter("status"));
         LocalDate dateCreated =  LocalDate.now();
-        LocalDate dateEnd = LocalDate.parse(req.getParameter("dateEnd"));
         Long userId = Long.parseLong(req.getParameter("user_id"));
+        Long createdByUserId = Long.parseLong(req.getParameter("createdByUser"));
 
         User user = userService.findById(userId);
+        User createdByUser = userService.findById(createdByUserId);
 
         Task task = new Task();
         task.setTitle(title);
@@ -59,6 +72,7 @@ public class TaskService {
         task.setDateCreated(dateCreated);
         task.setDateEnd(dateEnd);
         task.setUser(user);
+        task.setCreatedByUser(createdByUser);
 
         String[] tagIds = req.getParameterValues("tags[]");
         List<Tag> selectedTags = new ArrayList<>();
