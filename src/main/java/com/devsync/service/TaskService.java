@@ -11,6 +11,7 @@ import com.devsync.domain.enums.TaskStatus;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class TaskService {
         req.setAttribute("users", users);
         req.getRequestDispatcher("/pages/tasks/list.jsp").forward(req, resp);
     }
+
 
     public void save(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
@@ -73,6 +75,8 @@ public class TaskService {
 
         task.setTags(selectedTags);
 
+        HttpSession session = req.getSession();
+        session.setAttribute("successMessage", "Task created successfully!");
 
         taskDao.save(task);
         resp.sendRedirect(req.getContextPath() + "/tasks");

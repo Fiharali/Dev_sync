@@ -84,7 +84,7 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('#form-task');
+        const form = document.querySelector('#form-taskA');
 
         console.log(form)
 
@@ -161,6 +161,7 @@
             inputs.forEach(input => input.classList.remove('border-red-500'));
         }
     });
+
     $(document).ready(function() {
         $('.js-example-basic-multiple').select2({
             placeholder: "Select tags",
