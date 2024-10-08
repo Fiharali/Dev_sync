@@ -57,8 +57,8 @@
                          draggable="<%= isPastEndDate ? "false" : "true" %>"
                          data-task-id="<%= task.getId() %>">
 
-                        <button class="absolute top-0 right-0 me-1 mt-1  "  onclick="deleteTaskAction(<%= task.getId() %>)" >
-                            <i class="fa-solid fa-xmark" style="color: red"></i>
+                        <button class="absolute top-0 right-0 me-1 mt-1 <%= isPastEndDate ? "text-red-700  " : isNearEndDate ? "text-yellow-200" : "text-blue-700" %> "  onclick="deleteTaskAction(<%= task.getId() %>)" >
+                                <i class="fa-solid fa-xmark" ></i>
                         </button>
                         <h4 class="font-medium <%= isPastEndDate ? "text-red-700" : "" %>"><%= task.getTitle() %> </h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
@@ -66,10 +66,19 @@
                             <button  data-modal-target="assigned-modal-<%= task.getId() %>" data-modal-toggle="assigned-modal-<%= task.getId() %>" class="block text-white" type="button">
                                 <div class="flex">
                                     <img src="pages/assets/images/me.png" alt="Assignee" class="w-6 h-6 rounded-full bg-gray-300">
-                                    <span class="ml-2 text-xs text-gray-500"><%= task.getUser().getUsername() %></span>
+                                    <%
+                                        java.time.LocalDate today = java.time.LocalDate.now();
+                                        long daysDifference = java.time.temporal.ChronoUnit.DAYS.between(today, task.getDateEnd());
+                                        String daysText = (daysDifference > 0) ? daysDifference + " days" : (daysDifference < 0) ? daysDifference + "days" : "today";
+                                    %>
+
+                                    <span class="ml-2 text-xs text-gray-500 float-right">
+                                        <%= task.getUser().getUsername() %>
+                                        <span class="bg-gray-200 text-gray-800 text-xs font-medium ms-1 px-1 py-0.5 rounded-full  "><%= daysText %></span>
+                                    </span>
                                 </div>
                             </button>
-                            <% if (SessionUser.getUserType().name() == "MANAGER" ){%>
+                            <% if (SessionUser.getUserType().name().equals("MANAGER") && (!isNearEndDate && !isPastEndDate)) { %>
                             <div id="assigned-modal-<%= task.getId() %>" tabindex="-1" class="hidden fixed top-40 right-0 left-0 z-50 justify-center items-center w-full max-h-full">
                                 <div class="relative p-4 w-full max-w-md">
                                     <div class="relative bg-white rounded-lg">
@@ -136,22 +145,31 @@
                                     boolean isPastEndDate = now.isAfter(taskEndDate);
                                     boolean isNearEndDate = now.isAfter(taskEndDate.minusDays(3));
                     %>
-                    <div class="relative p-3 rounded shadow bg-white border-t-2 <%= isPastEndDate ? "border-red-700" : isNearEndDate ? "border-yellow-200" : "border-blue-700" %>"
+                    <div class="relative p-3 rounded shadow bg-white border-t-2 <%= isPastEndDate ? "border-red-700  " : isNearEndDate ? "border-yellow-200" : "border-blue-700" %>"
                          draggable="<%= isPastEndDate ? "false" : "true" %>"
                          data-task-id="<%= task.getId() %>">
-                        <button class="absolute top-0 right-0 me-1 mt-1  "  onclick="deleteTaskAction(<%= task.getId() %>)" >
-                            <i class="fa-solid fa-xmark" style="color: red"></i>
+                        <button class="absolute top-0 right-0 me-1 mt-1 <%= isPastEndDate ? "text-red-700  " : isNearEndDate ? "text-yellow-200" : "text-blue-700" %> "  onclick="deleteTaskAction(<%= task.getId() %>)" >
+                            <i class="fa-solid fa-xmark" ></i>
                         </button>
-                        <h4 class="font-medium <%= isPastEndDate ? "text-red-700" : "" %>"><%= task.getTitle() %></h4>
+                        <h4 class="font-medium "><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
                         <div class="flex items-center mt-2">
                             <button  data-modal-target="assigned-modal-<%= task.getId() %>" data-modal-toggle="assigned-modal-<%= task.getId() %>" class="block text-white" type="button">
                                 <div class="flex">
                                     <img src="pages/assets/images/me.png" alt="Assignee" class="w-6 h-6 rounded-full bg-gray-300">
-                                    <span class="ml-2 text-xs text-gray-500"><%= task.getUser().getUsername() %></span>
+                                    <%
+                                        java.time.LocalDate today = java.time.LocalDate.now();
+                                        long daysDifference = java.time.temporal.ChronoUnit.DAYS.between(today, task.getDateEnd());
+                                        String daysText = (daysDifference > 0) ? daysDifference + " days" : (daysDifference < 0) ? daysDifference + "days" : "today";
+                                    %>
+
+                                    <span class="ml-2 text-xs text-gray-500 float-right">
+                                        <%= task.getUser().getUsername() %>
+                                        <span class="bg-gray-200 text-gray-800 text-xs font-medium ms-1 px-1 py-0.5 rounded-full  "><%= daysText %></span>
+                                    </span>
                                 </div>
                             </button>
-                            <% if (SessionUser.getUserType().name() == "MANAGER" ){%>
+                            <% if (SessionUser.getUserType().name().equals("MANAGER") && (!isNearEndDate && !isPastEndDate)) { %>
                             <div id="assigned-modal-<%= task.getId() %>" tabindex="-1" class="hidden fixed top-40 right-0 left-0 z-50 justify-center items-center w-full max-h-full">
                                 <div class="relative p-4 w-full max-w-md">
                                     <div class="relative bg-white rounded-lg">
@@ -222,8 +240,8 @@
                     <div class=" relative p-3 rounded shadow bg-white border-t-2 <%= isPastEndDate ? "border-red-700" : isNearEndDate ? "border-yellow-200" : "border-blue-700" %>"
                          draggable="<%= isPastEndDate ? "false" : "true" %>"
                          data-task-id="<%= task.getId() %>">
-                        <button class="absolute top-0 right-0 me-1 mt-1  "  onclick="deleteTaskAction(<%= task.getId() %>)" >
-                            <i class="fa-solid fa-xmark" style="color: red"></i>
+                        <button class="absolute top-0 right-0 me-1 mt-1 <%= isPastEndDate ? "text-red-700  " : isNearEndDate ? "text-yellow-200" : "text-blue-700" %> "  onclick="deleteTaskAction(<%= task.getId() %>)" >
+                            <i class="fa-solid fa-xmark"></i>
                         </button>
                         <h4 class="font-medium <%= isPastEndDate ? "text-red-700" : "" %>"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
@@ -231,10 +249,19 @@
                             <button  data-modal-target="assigned-modal-<%= task.getId() %>" data-modal-toggle="assigned-modal-<%= task.getId() %>" class="block text-white" type="button">
                                 <div class="flex">
                                     <img src="pages/assets/images/me.png" alt="Assignee" class="w-6 h-6 rounded-full bg-gray-300">
-                                    <span class="ml-2 text-xs text-gray-500"><%= task.getUser().getUsername() %></span>
+                                    <%
+                                        java.time.LocalDate today = java.time.LocalDate.now();
+                                        long daysDifference = java.time.temporal.ChronoUnit.DAYS.between(today, task.getDateEnd());
+                                        String daysText = (daysDifference > 0) ? daysDifference + " days" : (daysDifference < 0) ? daysDifference + "days" : "today";
+                                    %>
+
+                                    <span class="ml-2 text-xs text-gray-500 float-right">
+                                        <%= task.getUser().getUsername() %>
+                                        <span class="bg-gray-200 text-gray-800 text-xs font-medium ms-1 px-1 py-0.5 rounded-full  "><%= daysText %></span>
+                                    </span>
                                 </div>
                             </button>
-                            <% if (SessionUser.getUserType().name() == "MANAGER" ){%>
+                            <% if (SessionUser.getUserType().name().equals("MANAGER") && (!isNearEndDate && !isPastEndDate)) { %>
                             <div id="assigned-modal-<%= task.getId() %>" tabindex="-1" class="hidden fixed top-40 right-0 left-0 z-50 justify-center items-center w-full max-h-full">
                                 <div class="relative p-4 w-full max-w-md">
                                     <div class="relative bg-white rounded-lg">
@@ -302,11 +329,11 @@
                                     boolean isPastEndDate = now.isAfter(taskEndDate);
                                     boolean isNearEndDate = now.isAfter(taskEndDate.minusDays(3));
                     %>
-                    <div class="relative p-3 rounded shadow bg-white border-t-2 <%= isPastEndDate ? "border-red-700" : isNearEndDate ? "border-yellow-200" : "border-blue-700" %>"
+                    <div class="relative p-3 rounded shadow bg-white border-t-2 <%= isPastEndDate ? "border-red-700 filtered " : isNearEndDate ? "border-yellow-200" : "border-blue-700" %>"
                          draggable="<%= isPastEndDate ? "false" : "true" %>"
                          data-task-id="<%= task.getId() %>">
-                        <button class="absolute top-0 right-0 me-1 mt-1  "  onclick="deleteTaskAction(<%= task.getId() %>)" >
-                            <i class="fa-solid fa-xmark" style="color: red"></i>
+                        <button class="absolute top-0 right-0 me-1 mt-1 <%= isPastEndDate ? "text-red-700  " : isNearEndDate ? "text-yellow-200" : "text-blue-700" %> "  onclick="deleteTaskAction(<%= task.getId() %>)" >
+                            <i class="fa-solid fa-xmark"></i>
                         </button>
                         <h4 class="font-medium <%= isPastEndDate ? "text-red-700" : "" %>"><%= task.getTitle() %></h4>
                         <p class="text-sm text-gray-600 mt-1"><%= task.getDescription() %></p>
@@ -314,10 +341,19 @@
                             <button  data-modal-target="assigned-modal-<%= task.getId() %>" data-modal-toggle="assigned-modal-<%= task.getId() %>" class="block text-white" type="button">
                                 <div class="flex">
                                     <img src="pages/assets/images/me.png" alt="Assignee" class="w-6 h-6 rounded-full bg-gray-300">
-                                    <span class="ml-2 text-xs text-gray-500"><%= task.getUser().getUsername() %></span>
+                                    <%
+                                        java.time.LocalDate today = java.time.LocalDate.now();
+                                        long daysDifference = java.time.temporal.ChronoUnit.DAYS.between(today, task.getDateEnd());
+                                        String daysText = (daysDifference > 0) ? daysDifference + " days" : (daysDifference < 0) ? daysDifference + "days" : "today";
+                                    %>
+
+                                    <span class="ml-2 text-xs text-gray-500 float-right">
+                                        <%= task.getUser().getUsername() %>
+                                        <span class="bg-gray-200 text-gray-800 text-xs font-medium ms-1 px-1 py-0.5 rounded-full  "><%= daysText %></span>
+                                    </span>
                                 </div>
                             </button>
-                            <% if (SessionUser.getUserType().name() == "MANAGER" ){%>
+                            <% if (SessionUser.getUserType().name().equals("MANAGER") && (!isNearEndDate && !isPastEndDate)) { %>
                             <div id="assigned-modal-<%= task.getId() %>" tabindex="-1" class="hidden fixed top-40 right-0 left-0 z-50 justify-center items-center w-full max-h-full">
                                 <div class="relative p-4 w-full max-w-md">
                                     <div class="relative bg-white rounded-lg">
@@ -381,6 +417,7 @@
             group: 'tasks',
             multiDrag: true,
             selectedClass: 'selected',
+            filter: '.filtered',
             fallbackTolerance: 3,
             ghostClass: 'blue-background-class',
             animation: 200,

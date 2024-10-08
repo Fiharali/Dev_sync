@@ -54,7 +54,7 @@
                 </div>
                 <% } %>
             </div>
-            <input type="text" name="createdByUser" value="<%= SessionUser.getId() %>">
+            <input type="hidden" name="createdByUser" value="<%= SessionUser.getId() %>">
 
             <div class="flex space-x-4">
                 <div class="w-1/2">
@@ -94,7 +94,7 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('#form-task');
+        const form = document.querySelector('#form-task1');
 
         console.log(form)
 
@@ -121,12 +121,12 @@
                 isValid = false;
             }
 
-
-            const today = new Date().toISOString().split('T')[0];
-            if (dateEnd.value === '' || dateEnd.value < today ) {
-                showError(dateEnd, 'End date must be in the future.');
-                isValid = false;
-            }
+            //
+            //  const today = new Date().toISOString().split('T')[0];
+            // if (dateEnd.value === '' || dateEnd.value < today ) {
+            //     showError(dateEnd, 'End date must be in the future.');
+            //     isValid = false;
+            // }
 
 
             if (userId.value === '') {
