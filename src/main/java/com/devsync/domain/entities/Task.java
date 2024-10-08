@@ -40,6 +40,12 @@ public class Task {
     private User user;
 
 
+    @ManyToOne
+    @JoinColumn(name = "created_by_user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User createdByUser;
+
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "task_tags",
@@ -52,7 +58,9 @@ public class Task {
 
     public Task() {}
 
-    public Task(Long id, String title, String description, TaskStatus status, LocalDate dateCreated, LocalDate dateEnd, User user) {
+
+
+    public Task(Long id, String title, String description, TaskStatus status, LocalDate dateCreated, LocalDate dateEnd, User user , User createdByUser) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -60,6 +68,7 @@ public class Task {
         this.dateCreated = dateCreated;
         this.dateEnd = dateEnd;
         this.user = user;
+        this.createdByUser = createdByUser;
     }
 
     public Long getId() {
@@ -116,6 +125,14 @@ public class Task {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public User getCreatedByUser() {
+        return createdByUser;
+    }
+
+    public void setCreatedByUser(User createdByUser) {
+        this.createdByUser = createdByUser;
     }
 
     public List<Tag> getTags() {

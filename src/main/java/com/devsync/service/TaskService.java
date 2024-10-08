@@ -11,10 +11,14 @@ import com.devsync.domain.enums.TaskStatus;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TaskService {
 
@@ -28,6 +32,8 @@ public class TaskService {
         userService = new UserService();
         tagService = new TagService();
         userDao = new UserDao();
+
+        updateTaskStatuses();
     }
 
 
@@ -39,16 +45,30 @@ public class TaskService {
         req.getRequestDispatcher("/pages/tasks/list.jsp").forward(req, resp);
     }
 
+
     public void save(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+
+        LocalDate dateEnd = LocalDate.parse(req.getParameter("dateEnd"));
+
+
+        if (dateEnd.isBefore(LocalDate.now().plusDays(3))){
+            HttpSession session = req.getSession();
+            session.setAttribute("errorMessage", "end date must be  3 days from now");
+            resp.sendRedirect(req.getContextPath() + "/tasks?action=create");
+            return;
+        }
+
         String title = req.getParameter("title");
+
         String description = req.getParameter("description");
         TaskStatus status = TaskStatus.valueOf(req.getParameter("status"));
         LocalDate dateCreated =  LocalDate.now();
-        LocalDate dateEnd = LocalDate.parse(req.getParameter("dateEnd"));
         Long userId = Long.parseLong(req.getParameter("user_id"));
+        Long createdByUserId = Long.parseLong(req.getParameter("createdByUser"));
 
         User user = userService.findById(userId);
+        User createdByUser = userService.findById(createdByUserId);
 
         Task task = new Task();
         task.setTitle(title);
@@ -57,6 +77,7 @@ public class TaskService {
         task.setDateCreated(dateCreated);
         task.setDateEnd(dateEnd);
         task.setUser(user);
+        task.setCreatedByUser(createdByUser);
 
         String[] tagIds = req.getParameterValues("tags[]");
         List<Tag> selectedTags = new ArrayList<>();
@@ -73,6 +94,8 @@ public class TaskService {
 
         task.setTags(selectedTags);
 
+        HttpSession session = req.getSession();
+        session.setAttribute("successMessage", "Task created successfully!");
 
         taskDao.save(task);
         resp.sendRedirect(req.getContextPath() + "/tasks");
@@ -113,7 +136,12 @@ public class TaskService {
 
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long taskId = Long.parseLong(req.getParameter("id"));
+        Long userId = Long.parseLong(req.getParameter("userId"));
+        User user = userDao.findById(userId);
         taskDao.delete(taskId);
+        user.setDeleteTokens(0);
+        userDao.update(user);
+        req.getSession().setAttribute("user", user);
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
 
@@ -147,4 +175,19 @@ public class TaskService {
 
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
+
+    private void updateTaskStatuses() {
+        List<Task> tasks = taskDao.findAll();
+        LocalDate today = LocalDate.now();
+
+        for (Task task : tasks) {
+            LocalDate taskEndDate = task.getDateEnd();
+            if (taskEndDate.isBefore(today) && task.getStatus() != TaskStatus.DONE) {
+                task.setStatus(TaskStatus.OVERDUE);
+            }
+            taskDao.update(task);
+        }
+    }
+
+
 }
