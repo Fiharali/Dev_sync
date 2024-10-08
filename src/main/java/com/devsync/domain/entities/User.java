@@ -33,6 +33,9 @@ public class User {
     @Column(name = "tokens")
     private int tokens;
 
+    @Column(name = "delete_tokens")
+    private int deleteTokens;
+
     @Column(name = "username")
     private String username;
 
@@ -49,7 +52,7 @@ public class User {
 
     public User() {}
 
-    public User(Long id, String name, String prenom, String email, String password, String username , UserType userType,int tokens) {
+    public User(Long id, String name, String prenom, String email, String password, String username , UserType userType,int tokens,int deleteTokens) {
         this.id = id;
         this.name = name;
         this.prenom = prenom;
@@ -58,6 +61,7 @@ public class User {
         this.username = username;
         this.userType = userType;
         this.tokens = tokens;
+        this.deleteTokens = deleteTokens;
     }
 
     public Long getId() {
@@ -119,7 +123,16 @@ public class User {
     }
 
     public void setTokens(int tokens) {
+
         this.tokens = tokens;
+    }
+
+    public int getDeleteTokens() {
+        return deleteTokens;
+    }
+
+    public void setDeleteTokens(int deleteTokens) {
+        this.deleteTokens = deleteTokens;
     }
 
     public List<Task> getTasks() {

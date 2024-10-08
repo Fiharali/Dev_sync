@@ -94,7 +94,7 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('#form-task1');
+        const form = document.querySelector('#form-task');
 
         console.log(form)
 
@@ -121,12 +121,12 @@
                 isValid = false;
             }
 
-            //
-            //  const today = new Date().toISOString().split('T')[0];
-            // if (dateEnd.value === '' || dateEnd.value < today ) {
-            //     showError(dateEnd, 'End date must be in the future.');
-            //     isValid = false;
-            // }
+
+             const today = new Date().toISOString().split('T')[0];
+            if (dateEnd.value === '' || dateEnd.value < today ) {
+                showError(dateEnd, 'End date must be in the future.');
+                isValid = false;
+            }
 
 
             if (userId.value === '') {

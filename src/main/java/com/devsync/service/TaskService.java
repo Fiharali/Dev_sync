@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TaskService {
 
@@ -29,6 +32,8 @@ public class TaskService {
         userService = new UserService();
         tagService = new TagService();
         userDao = new UserDao();
+
+        updateTaskStatuses();
     }
 
 
@@ -131,7 +136,12 @@ public class TaskService {
 
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long taskId = Long.parseLong(req.getParameter("id"));
+        Long userId = Long.parseLong(req.getParameter("userId"));
+        User user = userDao.findById(userId);
         taskDao.delete(taskId);
+        user.setDeleteTokens(0);
+        userDao.update(user);
+        req.getSession().setAttribute("user", user);
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
 
@@ -165,4 +175,19 @@ public class TaskService {
 
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
+
+    private void updateTaskStatuses() {
+        List<Task> tasks = taskDao.findAll();
+        LocalDate today = LocalDate.now();
+
+        for (Task task : tasks) {
+            LocalDate taskEndDate = task.getDateEnd();
+            if (taskEndDate.isBefore(today) && task.getStatus() != TaskStatus.DONE) {
+                task.setStatus(TaskStatus.OVERDUE);
+            }
+            taskDao.update(task);
+        }
+    }
+
+
 }
