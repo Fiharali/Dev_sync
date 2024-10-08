@@ -48,6 +48,7 @@ public class UserService {
             user.setTokens(0);
         }else {
             user.setTokens(2);
+            user.setDeleteTokens(1);
         }
 
 

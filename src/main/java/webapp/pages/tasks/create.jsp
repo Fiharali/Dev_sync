@@ -8,8 +8,8 @@
 <div class="p-4 sm:ml-64">
     <div class="max-w-xl mx-auto mt-20">
         <h2 class="text-center text-2xl font-bold mb-5">Create Task</h2>
-        <form action="/tasks" method="POST" class="space-y-5">
-            <input type="hidden" name="_method" value="POST" required>
+        <form action="/tasks" id="form-task" method="POST" class="space-y-5">
+            <input type="hidden" name="_method" value="POST" >
 
             <div>
                 <label for="title" class="block mb-2 text-sm font-medium text-gray-900">Title:</label>
@@ -21,9 +21,9 @@
                     <label for="status" class="block mb-2 text-sm font-medium text-gray-900">Status:</label>
                     <select id="status" name="status" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">Select status</option>
-                        <% for (TaskStatus status : TaskStatus.values()) { %>
-                        <option value="<%= status %>"><%= status.name() %></option>
-                        <% } %>
+
+                        <option value="TODO" >ToDo</option>
+                        <option value="IN_PROGRESS" >In Progress</option>
                     </select>
                 </div>
                 <%
@@ -32,7 +32,7 @@
                 %>
                 <div class="w-1/2">
                     <label for="userId" class="block mb-2 text-sm font-medium text-gray-900">Assigned To:</label>
-                    <select id=""  name="user_id" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <select id="userId"  name="user_id" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">Select a user</option>
                         <% List<User> users = (List<User>) request.getAttribute("users");
                             for (User user : users) { %>
@@ -45,8 +45,8 @@
                 </div>
                 <% } else  {%>
                 <div class="w-1/2">
-                    <label for="userId" class="block mb-2 text-sm font-medium text-gray-900">Assigned To:</label>
-                    <select id="userId"  name="user_id" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <label for="userId2" class="block mb-2 text-sm font-medium text-gray-900">Assigned To:</label>
+                    <select id="userId2"  name="user_id" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="<%= SessionUser.getId() %>">
                             <%= SessionUser.getUsername() %> --> tokens: <%= SessionUser.getId() %>
                         </option>
@@ -54,11 +54,21 @@
                 </div>
                 <% } %>
             </div>
+            <input type="hidden" name="createdByUser" value="<%= SessionUser.getId() %>">
 
             <div class="flex space-x-4">
                 <div class="w-1/2">
                     <label for="dateEnd" class="block mb-2 text-sm font-medium text-gray-900">Date End:</label>
                     <input type="date" id="dateEnd" name="dateEnd" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                    <%
+                        String errorMessage = (String) session.getAttribute("errorMessage");
+                        if (errorMessage != null) {
+                    %>
+                    <span class="ms-3 text-sm text-red-500  font-medium">
+                        <%= errorMessage %>
+                    </span>
+                    <% session.removeAttribute("errorMessage"); %>
+                    <% } %>
                 </div>
 
                 <div class="w-1/2">
@@ -84,17 +94,18 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form');
+        const form = document.querySelector('#form-task');
+
+        console.log(form)
 
 
         form.addEventListener('submit', function (event) {
             let isValid = true;
-
-
             const title = document.getElementById('title');
             const status = document.getElementById('status');
             const dateEnd = document.getElementById('dateEnd');
             const userId = document.getElementById('userId');
+            const tags = document.getElementById('tags');
             const description = document.getElementById('description');
 
             clearErrors();
@@ -111,8 +122,8 @@
             }
 
 
-            const today = new Date().toISOString().split('T')[0];
-            if (dateEnd.value === '' || dateEnd.value < today) {
+             const today = new Date().toISOString().split('T')[0];
+            if (dateEnd.value === '' || dateEnd.value < today ) {
                 showError(dateEnd, 'End date must be in the future.');
                 isValid = false;
             }
@@ -120,6 +131,11 @@
 
             if (userId.value === '') {
                 showError(userId, 'Please select a user.');
+                isValid = false;
+            }
+
+            if (tags.value === '') {
+                showError(tags, 'Please select a Tag.');
                 isValid = false;
             }
 
@@ -152,6 +168,7 @@
             inputs.forEach(input => input.classList.remove('border-red-500'));
         }
     });
+
     $(document).ready(function() {
         $('.js-example-basic-multiple').select2({
             placeholder: "Select tags",
