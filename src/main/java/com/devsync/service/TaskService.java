@@ -38,6 +38,7 @@ public class TaskService {
 
 
     public void findAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         List<Task> tasks = taskDao.findAll();
         List<User> users = userDao.findAll();
         req.setAttribute("tasks", tasks);
@@ -50,11 +51,16 @@ public class TaskService {
         req.setCharacterEncoding("UTF-8");
 
         LocalDate dateEnd = LocalDate.parse(req.getParameter("dateEnd"));
+        LocalDate dateStart = LocalDate.parse(req.getParameter("dateStart"));
 
-
+        HttpSession session = req.getSession();
         if (dateEnd.isBefore(LocalDate.now().plusDays(3))){
-            HttpSession session = req.getSession();
-            session.setAttribute("errorMessage", "end date must be  3 days from now");
+            session.setAttribute("errorMessageFirst", "start date must be 3 days from now");
+            resp.sendRedirect(req.getContextPath() + "/tasks?action=create");
+            return;
+        }
+        if (dateEnd.isBefore(dateStart)){
+            session.setAttribute("errorMessageSecond", "start date must be befor end date ");
             resp.sendRedirect(req.getContextPath() + "/tasks?action=create");
             return;
         }
@@ -76,6 +82,7 @@ public class TaskService {
         task.setStatus(status);
         task.setDateCreated(dateCreated);
         task.setDateEnd(dateEnd);
+        task.setStartDate(dateStart);
         task.setUser(user);
         task.setCreatedByUser(createdByUser);
 
@@ -93,11 +100,8 @@ public class TaskService {
 
 
         task.setTags(selectedTags);
-
-        HttpSession session = req.getSession();
-        session.setAttribute("successMessage", "Task created successfully!");
-
         taskDao.save(task);
+        session.setAttribute("successMessage", "Task created successfully!");
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
 

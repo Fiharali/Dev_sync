@@ -58,29 +58,42 @@
 
             <div class="flex space-x-4">
                 <div class="w-1/2">
-                    <label for="dateEnd" class="block mb-2 text-sm font-medium text-gray-900">Date End:</label>
-                    <input type="date" id="dateEnd" name="dateEnd" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                    <label for="dateStart" class="block mb-2 text-sm font-medium text-gray-900">Date Start:</label>
+                    <input type="date" id="dateStart" name="dateStart" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                     <%
-                        String errorMessage = (String) session.getAttribute("errorMessage");
-                        if (errorMessage != null) {
+                        String errorMessageFirst = (String) session.getAttribute("errorMessageFirst");
+                        if (errorMessageFirst != null) {
                     %>
                     <span class="ms-3 text-sm text-red-500  font-medium">
-                        <%= errorMessage %>
+                        <%= errorMessageFirst %>
                     </span>
-                    <% session.removeAttribute("errorMessage"); %>
+                    <% session.removeAttribute("errorMessageFirst"); %>
+                    <% } %>
+                </div>
+                <div class="w-1/2">
+                    <label for="dateEnd" class="block mb-2 text-sm font-medium text-gray-900">Date End:</label>
+                    <input type="date" id="dateEnd" name="dateEnd" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                    <% String errorMessageSecond = (String) session.getAttribute("errorMessageSecond");
+                        if (errorMessageSecond != null) {
+                    %>
+                    <span class="ms-3 text-sm text-red-500  font-medium">
+                        <%= errorMessageSecond %>
+                    </span>
+                    <% session.removeAttribute("errorMessageSecond"); %>
                     <% } %>
                 </div>
 
-                <div class="w-1/2">
-                    <label for="tags" class="block mb-2 text-sm font-medium text-gray-900">Add Tags</label>
-                    <select multiple id="tags" name="tags[]" class=" js-example-basic-multiple shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        <option value="">Select tags</option>
-                        <% List<Tag> tags = (List<Tag>) request.getAttribute("tags");
-                            for (Tag tag : tags) { %>
-                        <option value="<%= tag.getId() %>"><%= tag.getName() %></option>
-                        <% } %>
-                    </select>
-                </div>
+
+            </div>
+            <div class="">
+                <label for="tags" class="block mb-2 text-sm font-medium text-gray-900">Add Tags</label>
+                <select multiple id="tags" name="tags[]" class=" js-example-basic-multiple shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <option value="">Select tags</option>
+                    <% List<Tag> tags = (List<Tag>) request.getAttribute("tags");
+                        for (Tag tag : tags) { %>
+                    <option value="<%= tag.getId() %>"><%= tag.getName() %></option>
+                    <% } %>
+                </select>
             </div>
 
             <div>
@@ -104,6 +117,7 @@
             const title = document.getElementById('title');
             const status = document.getElementById('status');
             const dateEnd = document.getElementById('dateEnd');
+            const dateStart = document.getElementById('dateStart');
             const userId = document.getElementById('userId');
             const tags = document.getElementById('tags');
             const description = document.getElementById('description');
@@ -123,8 +137,13 @@
 
 
              const today = new Date().toISOString().split('T')[0];
-            if (dateEnd.value === '' || dateEnd.value < today ) {
-                showError(dateEnd, 'End date must be in the future.');
+            if (dateStart.value === '' || dateStart.value < today ) {
+                showError(dateStart, 'stqrt date must be in the future.');
+                isValid = false;
+            }
+
+            if (dateEnd.value < dateStart.value ) {
+                showError(dateEnd, 'End date must be after start date.');
                 isValid = false;
             }
 
