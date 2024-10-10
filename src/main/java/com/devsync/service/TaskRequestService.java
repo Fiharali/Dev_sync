@@ -68,7 +68,7 @@ public class TaskRequestService {
         TaskRequest taskRequest = taskRequestDao.findById(id);
         HttpSession session = req.getSession();
         User sessionUser = (User) session.getAttribute("user");
-        if ( status.equals(TaskRequestStatus.REJECTED)){
+        if ( status.equals(TaskRequestStatus.PENDING)){
             sessionUser.setTokens(sessionUser.getTokens() - 1);
             userService.updateStatus(sessionUser);
         }
@@ -79,6 +79,14 @@ public class TaskRequestService {
     }
 
 
+    public void findRejectedTasks(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<TaskRequest> tasksRequest = taskRequestDao.findAll();
+        tasksRequest.stream().filter(taskRequest ->
+                        taskRequest.getTaskRequestStatus().equals(TaskRequestStatus.REJECTED)
+                        && taskRequest.getDate().minusHours(12).equals(LocalDateTime.now())
+        );
+        req.setAttribute("tasksRequest", tasksRequest);
+        req.getRequestDispatcher("/pages/tasks/list-request-rejected.jsp").forward(req, resp);
 
-
+    }
 }

@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 public class TaskService {
 
     private TaskDao taskDao;
-   private UserDao userDao;
     private UserService userService;
     private TagService tagService;
     private TaskRequestService taskRequestService;
@@ -32,7 +31,6 @@ public class TaskService {
         taskDao = new TaskDao();
         userService = new UserService();
         tagService = new TagService();
-        userDao = new UserDao();
         taskRequestService = new TaskRequestService();
 
         updateTaskStatuses();
@@ -42,7 +40,7 @@ public class TaskService {
     public void findAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         List<Task> tasks = taskDao.findAll();
-        List<User> users = userDao.findAll();
+        List<User> users = userService.returnFindAll();
         req.setAttribute("tasks", tasks);
         req.setAttribute("users", users);
         req.getRequestDispatcher("/pages/tasks/list.jsp").forward(req, resp);
@@ -125,7 +123,7 @@ public class TaskService {
         LocalDate dateEnd = LocalDate.parse(req.getParameter("dateEnd"));
         Long userId = Long.parseLong(req.getParameter("userId"));
 
-       // User user = userDao.findById(userId);
+
 
         Task task = new Task();
         task.setId(taskId);
@@ -143,10 +141,10 @@ public class TaskService {
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long taskId = Long.parseLong(req.getParameter("id"));
         Long userId = Long.parseLong(req.getParameter("userId"));
-        User user = userDao.findById(userId);
+        User user = userService.findById(userId);
         taskDao.delete(taskId);
         user.setDeleteTokens(0);
-        userDao.update(user);
+        userService.update(user);
         req.getSession().setAttribute("user", user);
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
@@ -173,11 +171,13 @@ public class TaskService {
         Long taskId = Long.parseLong(req.getParameter("task_id"));
         Long userId = Long.parseLong(req.getParameter("user_id"));
         Task task = taskDao.findById(taskId);
-        User user = userDao.findById(userId);
+        User user = userService.findById(userId);
         if (task != null && user != null) {
             task.setUser(user);
             taskDao.update(task);
         }
+
+        taskRequestService.save(user, task);
 
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }

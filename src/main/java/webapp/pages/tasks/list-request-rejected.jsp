@@ -9,7 +9,7 @@
 
     <div class="relative mx-auto w-full mt-10 pt-10 overflow-x-auto">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-semibold text-indigo-800">Tasks Requests</h2>
+            <h2 class="text-2xl font-semibold text-indigo-800"> Rejected Tasks </h2>
         </div>
         <table class="min-w-full mx-auto text-sm text-left mt-5 rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -19,15 +19,15 @@
                 <th scope="col" class="px-6 py-3">Assigned to</th>
                 <th scope="col" class="px-6 py-3">Date</th>
                 <th scope="col" class="px-6 py-3">Status</th>
-                <th scope="col" class="px-6 py-3">Action</th>
+                <th scope="col" class="px-6 py-3">Actions</th>
             </tr>
             </thead>
             <tbody>
             <%
-                List<TaskRequest> tasks = (List<TaskRequest>) request.getAttribute("tasks");
+                List<TaskRequest> tasks = (List<TaskRequest>) request.getAttribute("tasksRequest");
                 if (tasks != null) {
                     for (TaskRequest task : tasks) {
-                        if (task.getUser().getId().equals(SessionUser.getId()) && task.getTaskRequestStatus().name().equals("APPROVED")) {
+                        if (  task.getTaskRequestStatus().name().equals("PENDING")) {
             %>
             <tr class="bg-white border-b">
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -61,6 +61,7 @@
                 </svg>
                  <%= timeAgo %>
                 </span>
+
                 </td>
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     <span class="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-purple-400"> <%= task.getTaskRequestStatus() %></span>
@@ -68,13 +69,14 @@
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex">
                     <form action="tasks-request" method="post">
                         <input type="hidden" name="id" value="<%=task.getId()%>">
-                        <input type="hidden" name="_method"  value="PENDING">
-                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" <%= task.getUser().getTokens() == 0 ?  "" : "disabled" %>  >REJECTED</button>
+                        <input type="hidden" name="_method" value="REJECTED">
+                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" >APPROVE</button>
                     </form>
                 </td>
+
             </tr>
             <%
-                    }
+                        }
                     }
                 }
             %>

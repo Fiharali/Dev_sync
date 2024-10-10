@@ -22,11 +22,11 @@ public class TaskRequest {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
 

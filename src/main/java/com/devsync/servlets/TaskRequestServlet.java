@@ -28,8 +28,13 @@ public class TaskRequestServlet extends HttpServlet {
                         resp.sendRedirect(req.getContextPath() + "/login");
                         return;
                 }
+                String action = req.getParameter("action");
+                if ("rejected-tasks".equals(action)) {
+                        taskRequestService.findRejectedTasks(req, resp);
+                } else {
+                        taskRequestService.findRecentTasksForUser(req, resp);
 
-                taskRequestService.findRecentTasksForUser(req, resp);
+                }
         }
 
         @Override

@@ -40,7 +40,7 @@
             <li>
                 <a href="/tasks-request?action=rejected-tasks" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
                     <i class="fa-sharp-duotone fa-solid fa-list-check w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
-                    <span class="ms-3"> Tasks  </span>
+                    <span class="ms-3"> Tasks rejected   </span>
                 </a>
             </li>
             <% } %>

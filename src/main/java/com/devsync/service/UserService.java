@@ -24,6 +24,10 @@ public class UserService {
         req.getRequestDispatcher("/pages/users/list.jsp").forward(req, resp);
     }
 
+    public List<User> returnFindAll() {
+        return userDao.findAll();
+    }
+
     public User findById(Long userId) {
         return userDao.findById(userId);
     }
@@ -86,6 +90,11 @@ public class UserService {
 
         userDao.update(user);
         resp.sendRedirect(req.getContextPath() + "/users");
+    }
+
+
+    public  void update(User user)  {
+        userDao.update(user);
     }
 
 
