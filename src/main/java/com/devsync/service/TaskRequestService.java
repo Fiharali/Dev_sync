@@ -1,92 +1,39 @@
 package com.devsync.service;
 
+import com.devsync.controller.UserController;
 import com.devsync.dao.TaskRequestDao;
-import com.devsync.dao.UserDao;
-import com.devsync.domain.entities.Tag;
-import com.devsync.domain.entities.Task;
 import com.devsync.domain.entities.TaskRequest;
-import com.devsync.domain.entities.User;
-import com.devsync.domain.enums.TaskRequestStatus;
-import com.devsync.domain.enums.TaskStatus;
+import com.devsync.service.interfaces.TaskRequestServiceInterface;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-public class TaskRequestService {
+public class TaskRequestService implements TaskRequestServiceInterface {
+
 
     private TaskRequestDao taskRequestDao;
-    private UserService userService;
-
 
     public TaskRequestService() {
-
-        userService = new UserService();
         taskRequestDao = new TaskRequestDao();
 
     }
 
-
-    public void findRecentTasksForUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        HttpSession session = req.getSession();
-        User sessionUser = (User) session.getAttribute("user");
-        if (sessionUser != null){
-            List<TaskRequest> tasksRequest = taskRequestDao.findAll();
-            tasksRequest.stream().filter(taskRequest ->
-                         taskRequest.getUser().getId().equals(sessionUser.getId())
-                         && taskRequest.getTaskRequestStatus().equals(TaskRequestStatus.PENDING)
-                         && taskRequest.getDate().minusHours(12).equals(LocalDateTime.now())
-            );
-            req.setAttribute("tasks", tasksRequest);
-        }
-        req.getRequestDispatcher("/pages/tasks/list-request.jsp").forward(req, resp);
+    @Override
+    public List<TaskRequest> findAll(){
+        return taskRequestDao.findAll();
     }
 
-
-
-    public void save(User user , Task task)  {
-
-        TaskRequest taskRequest = new TaskRequest();
-        taskRequest.setUser(user);
-        taskRequest.setTask(task);
-        taskRequest.setDate(LocalDateTime.now());
-        taskRequest.setTaskRequestStatus(TaskRequestStatus.PENDING);
-        taskRequestDao.save(taskRequest);
-
+    @Override
+    public TaskRequest save(TaskRequest taskRequest) {
+        return taskRequestDao.save(taskRequest);
     }
 
-    public void updateStatus(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long id = Long.parseLong(req.getParameter("id"));
-        TaskRequestStatus status =TaskRequestStatus.valueOf(req.getParameter("_method"));
-        TaskRequest taskRequest = taskRequestDao.findById(id);
-        HttpSession session = req.getSession();
-        User sessionUser = (User) session.getAttribute("user");
-        if ( status.equals(TaskRequestStatus.PENDING)){
-            sessionUser.setTokens(sessionUser.getTokens() - 1);
-            userService.updateStatus(sessionUser);
-        }
-
-        taskRequest.setTaskRequestStatus(status);
-        taskRequestDao.update(taskRequest);
-        resp.sendRedirect(req.getContextPath() + "/tasks");
+    @Override
+    public TaskRequest findById(Long id) {
+        return taskRequestDao.findById(id);
     }
 
-
-    public void findRejectedTasks(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<TaskRequest> tasksRequest = taskRequestDao.findAll();
-        tasksRequest.stream().filter(taskRequest ->
-                        taskRequest.getTaskRequestStatus().equals(TaskRequestStatus.REJECTED)
-                        && taskRequest.getDate().minusHours(12).equals(LocalDateTime.now())
-        );
-        req.setAttribute("tasksRequest", tasksRequest);
-        req.getRequestDispatcher("/pages/tasks/list-request-rejected.jsp").forward(req, resp);
-
+    @Override
+    public TaskRequest update(TaskRequest taskRequest) {
+        return  taskRequestDao.update(taskRequest);
     }
 }

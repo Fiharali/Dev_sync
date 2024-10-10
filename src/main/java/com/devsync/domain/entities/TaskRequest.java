@@ -28,6 +28,7 @@ public class TaskRequest {
 
     @ManyToOne
     @JoinColumn(name = "task_id")
+
     private Task task;
 
     public TaskRequest() {

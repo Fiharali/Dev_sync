@@ -2,7 +2,6 @@ package com.devsync.servlets;
 
 import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.User;
-import com.devsync.service.UserService;
 import com.devsync.utils.SessionUtil;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -12,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 

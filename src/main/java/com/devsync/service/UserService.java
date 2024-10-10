@@ -2,15 +2,12 @@ package com.devsync.service;
 
 import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.User;
-import com.devsync.domain.enums.UserType;
+import com.devsync.service.interfaces.UserServiceInterface;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
-public class UserService {
+public class UserService implements UserServiceInterface {
+
 
     private UserDao userDao;
 
@@ -18,99 +15,35 @@ public class UserService {
         userDao = new UserDao();
     }
 
-    public void findAll(HttpServletRequest req, HttpServletResponse resp) throws  ServletException ,IOException{
-        List<User> users = userDao.findAll();
-        req.setAttribute("users", users);
-        req.getRequestDispatcher("/pages/users/list.jsp").forward(req, resp);
-    }
-
-    public List<User> returnFindAll() {
+    @Override
+    public List<User> findAll(){
         return userDao.findAll();
     }
 
+    @Override
     public User findById(Long userId) {
         return userDao.findById(userId);
     }
 
-    public void save(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        String username = req.getParameter("username");
-        String name = req.getParameter("name");
-        String prenom = req.getParameter("prenom");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        String userType = req.getParameter("userType");
-
-        User user = new User();
-        user.setUsername(username);
-        user.setName(name);
-        user.setPrenom(prenom);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setUserType(UserType.valueOf(userType.toUpperCase()));
-        if (user.getUserType() == UserType.MANAGER) {
-            user.setTokens(0);
-        }else {
-            user.setTokens(2);
-            user.setDeleteTokens(1);
-        }
-
-
-
-        userDao.save(user);
-        resp.sendRedirect(req.getContextPath() + "/users");
+    @Override
+    public User save(User user){
+        return  userDao.save(user);
     }
 
-    public void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long userId = Long.parseLong(req.getParameter("id"));
-        User user = userDao.findById(userId);
-        if (user != null) {
-            req.setAttribute("user", user);
-            req.getRequestDispatcher("/pages/users/update.jsp").forward(req, resp);
-        }
+    @Override
+    public User update(User user){
+        return userDao.update(user);
     }
 
-    public void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long userId = Long.parseLong(req.getParameter("id"));
-        String username = req.getParameter("username");
-        String name = req.getParameter("name");
-        String prenom = req.getParameter("prenom");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        String userType = req.getParameter("userType");
-
-        User user = new User();
-        user.setId(userId);
-        user.setUsername(username);
-        user.setName(name);
-        user.setPrenom(prenom);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setUserType(UserType.valueOf(userType.toUpperCase()));
-
-        userDao.update(user);
-        resp.sendRedirect(req.getContextPath() + "/users");
+    @Override
+    public void delete(Long userId){
+       userDao.delete(userId);
     }
 
-
-    public  void update(User user)  {
-        userDao.update(user);
-    }
-
-
-    public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long userId = Long.parseLong(req.getParameter("id"));
-        userDao.delete(userId);
-       // req.setAttribute("successDeleteMessage", "User deleted successfully!");
-        resp.sendRedirect(req.getContextPath() + "/users");
-    }
-
-
-    public List<User> getUserWhoHaveUserTypeUser() {
+    @Override
+    public List<User> getUsers(){
         return userDao.getUserWhoHaveUserTypeUser();
     }
 
-    public void updateStatus(User user){
-        userDao.update(user);
-    }
+
 }

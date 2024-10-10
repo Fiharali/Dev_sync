@@ -1,9 +1,7 @@
 package com.devsync.servlets;
 
-import com.devsync.domain.entities.Tag;
-import com.devsync.service.TagService;
+import com.devsync.controller.TagController;
 import com.devsync.utils.CheckAccess;
-import com.devsync.utils.SessionUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,16 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "tagServlet", urlPatterns = {"/tags"})
 public class TagServlet extends HttpServlet {
 
-    private TagService tagService;
+    private TagController tagController;
 
     @Override
     public void init() throws ServletException {
-        tagService = new TagService();
+        tagController = new TagController();
     }
 
     @Override
@@ -32,7 +29,7 @@ public class TagServlet extends HttpServlet {
         if ("create".equals(action)) {
             req.getRequestDispatcher("pages/tags/create.jsp").forward(req, resp);
             } else {
-                tagService.findAll(req, resp);
+                tagController.findAll(req, resp);
             }
     }
 
@@ -46,16 +43,16 @@ public class TagServlet extends HttpServlet {
 
         switch (method) {
             case "DELETE":
-                tagService.delete(req, resp);
+                tagController.delete(req, resp);
                 break;
             case "UPDATE":
-                tagService.edit(req, resp);
+                tagController.edit(req, resp);
                 break;
             case "PUT":
-                tagService.update(req, resp);
+                tagController.update(req, resp);
                 break;
             default:
-                tagService.save(req, resp);
+                tagController.save(req, resp);
                 break;
         }
     }

@@ -26,21 +26,23 @@ public class TaskRequestDao {
          }
 
 
-       public void save(TaskRequest taskRequest) {
+       public TaskRequest save(TaskRequest taskRequest) {
            EntityManager em = emf.createEntityManager();
            em.getTransaction().begin();
            em.persist(taskRequest);
            em.getTransaction().commit();
            em.close();
+           return taskRequest;
        }
 
 
-       public void update(TaskRequest taskRequest) {
+       public TaskRequest update(TaskRequest taskRequest) {
            EntityManager em = emf.createEntityManager();
            em.getTransaction().begin();
            em.merge(taskRequest);
            em.getTransaction().commit();
            em.close();
+           return taskRequest;
        }
 
        public TaskRequest findById(Long taskRequestId) {

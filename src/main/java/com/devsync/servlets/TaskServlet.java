@@ -1,7 +1,7 @@
 package com.devsync.servlets;
 
 
-import com.devsync.service.TaskService;
+import com.devsync.controller.TaskController;
 import com.devsync.utils.SessionUtil;
 
 import javax.servlet.ServletException;
@@ -9,17 +9,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "taskServlet", urlPatterns = {"/tasks"})
 public class TaskServlet extends HttpServlet {
 
-        private TaskService taskService;
+        private TaskController taskController;
 
         @Override
         public void init() throws ServletException {
-                taskService = new TaskService();
+                taskController = new TaskController();
         }
 
         @Override
@@ -30,9 +29,9 @@ public class TaskServlet extends HttpServlet {
                 }
                 String action = req.getParameter("action");
                 if ("create".equals(action)) {
-                        taskService.displayCreateForm(req, resp);
+                        taskController.displayCreateForm(req, resp);
                 } else {
-                        taskService.findAll(req, resp);
+                        taskController.findAll(req, resp);
                 }
         }
 
@@ -43,22 +42,22 @@ public class TaskServlet extends HttpServlet {
 
                 switch (method) {
                         case "DELETE":
-                                taskService.delete(req, resp);
+                                taskController.delete(req, resp);
                                 break;
                         case "UPDATE":
-                                taskService.edit(req, resp);
+                                taskController.edit(req, resp);
                                 break;
                         case "PUT":
-                                taskService.update(req, resp);
+                                taskController.update(req, resp);
                                 break;
                         case "UPDATE_STATUS":
-                                taskService.updateStatus(req, resp);
+                                taskController.updateStatus(req, resp);
                                 break;
                         case "UPDATE_USER":
-                                taskService.updateUser(req, resp);
+                                taskController.updateUser(req, resp);
                                 break;
                         default:
-                                taskService.save(req, resp);
+                                taskController.save(req, resp);
                                 break;
                 }
         }
