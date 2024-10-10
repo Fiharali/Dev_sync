@@ -1,4 +1,4 @@
-package com.devsync.utils;
+    package com.devsync.utils;
 
 import com.devsync.domain.entities.User;
 

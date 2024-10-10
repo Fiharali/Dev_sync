@@ -56,13 +56,12 @@ public class Task {
 
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinTable(
             name = "task_tags",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Tag> tags;
 
 

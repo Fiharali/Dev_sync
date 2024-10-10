@@ -100,4 +100,8 @@ public class UserService {
     public List<User> getUserWhoHaveUserTypeUser() {
         return userDao.getUserWhoHaveUserTypeUser();
     }
+
+    public void updateStatus(User user){
+        userDao.update(user);
+    }
 }

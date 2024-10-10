@@ -26,12 +26,14 @@ public class TaskService {
    private UserDao userDao;
     private UserService userService;
     private TagService tagService;
+    private TaskRequestService taskRequestService;
 
     public TaskService() {
         taskDao = new TaskDao();
         userService = new UserService();
         tagService = new TagService();
         userDao = new UserDao();
+        taskRequestService = new TaskRequestService();
 
         updateTaskStatuses();
     }
@@ -97,10 +99,10 @@ public class TaskService {
         }
 
 
-
-
         task.setTags(selectedTags);
-        taskDao.save(task);
+        Task task1 = taskDao.save(task);
+        taskRequestService.save(user, task1);
+
         session.setAttribute("successMessage", "Task created successfully!");
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
