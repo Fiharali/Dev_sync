@@ -5,6 +5,7 @@ import com.devsync.domain.entities.TaskRequest;
 import com.devsync.domain.entities.User;
 import com.devsync.domain.enums.TaskRequestStatus;
 import com.devsync.service.TaskRequestService;
+import com.devsync.service.TaskService;
 import com.devsync.service.UserService;
 import com.devsync.service.interfaces.TaskRequestServiceInterface;
 import com.devsync.service.interfaces.UserServiceInterface;
@@ -21,12 +22,15 @@ public class TaskRequestController {
 
     private TaskRequestServiceInterface taskRequestServiceInterface;
     private UserServiceInterface userServiceInterface;
+    private TaskService taskService;
 
 
     public TaskRequestController() {
         userServiceInterface = new UserService();
         taskRequestServiceInterface = new TaskRequestService();
+        taskService = new TaskService();
 
+        //updateTaskRequest();
 
     }
 
@@ -72,7 +76,11 @@ public class TaskRequestController {
             userServiceInterface.update(sessionUser);
         }
 
+        Task task = taskRequest.getTask();
+        task.setAssigned(true);
+        taskService.update(task);
         taskRequest.setTaskRequestStatus(status);
+        taskRequest.setDate(LocalDateTime.now());
         taskRequestServiceInterface.update(taskRequest);
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
@@ -86,6 +94,22 @@ public class TaskRequestController {
         );
         req.setAttribute("tasksRequest", tasksRequest);
         req.getRequestDispatcher("/pages/request/list-request-rejected.jsp").forward(req, resp);
+
+    }
+
+
+
+    public void updateTaskRequest() {
+
+        List<TaskRequest> tasksRequest = taskRequestServiceInterface.findAll();
+        tasksRequest.stream().filter(taskRequest ->
+                        taskRequest.getTaskRequestStatus().equals(TaskRequestStatus.PENDING)
+                        && taskRequest.getDate().plusMinutes(1).isBefore(LocalDateTime.now())
+        ).forEach(taskRequest -> {
+            taskRequest.setTaskRequestStatus(TaskRequestStatus.APPROVED);
+            taskRequestServiceInterface.update(taskRequest);
+        });
+
 
     }
 }

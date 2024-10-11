@@ -95,6 +95,7 @@ public class TaskController {
         task.setDateEnd(dateEnd);
         task.setStartDate(dateStart);
         task.setUser(user);
+        task.setAssigned(false);
         task.setCreatedByUser(createdByUser);
 
         String[] tagIds = req.getParameterValues("tags[]");
@@ -186,13 +187,14 @@ public class TaskController {
         if (task != null && user != null) {
             task.setUser(user);
             taskServiceInterface.update(task);
+            TaskRequest taskRequest = taskRequestService.findByTsakId(taskId);
+            taskRequest.setUser(user);
+            taskRequest.setDate(LocalDateTime.now());
+            taskRequest.setTaskRequestStatus(TaskRequestStatus.APPROVED);
+            taskRequestService.update(taskRequest);
         }
 
-        TaskRequest taskRequest = taskRequestService.findByTsakId(taskId);
-        taskRequest.setUser(user);
-        taskRequest.setDate(LocalDateTime.now());
-        taskRequest.setTaskRequestStatus(TaskRequestStatus.APPROVED);
-        taskRequestService.update(taskRequest);
+
 
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }

@@ -43,6 +43,9 @@ public class Task {
     @Column(name = "date_end")
     private LocalDate dateEnd;
 
+    @Column(name = "is_assigned")
+    private boolean isAssigned;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)

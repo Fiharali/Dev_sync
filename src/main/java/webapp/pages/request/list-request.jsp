@@ -69,7 +69,7 @@
                     <form action="tasks-request" method="post">
                         <input type="hidden" name="id" value="<%=task.getId()%>">
                         <input type="hidden" name="_method"  value="PENDING">
-                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" <%= task.getUser().getTokens() == 0 ?  "" : "disabled" %>  >REJECTED</button>
+                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" <%= task.getUser().getTokens() > 0 ?  "" : "disabled" %> <%=task.getTask().isAssigned() ?"disabled":"" %>  >REJECTED</button>
                     </form>
                 </td>
             </tr>
