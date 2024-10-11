@@ -44,7 +44,7 @@ public class TaskRequestController {
             );
             req.setAttribute("tasks", tasksRequest);
         }
-        req.getRequestDispatcher("/pages/tasks/list-request.jsp").forward(req, resp);
+        req.getRequestDispatcher("/pages/request/list-request.jsp").forward(req, resp);
     }
 
 
@@ -85,7 +85,7 @@ public class TaskRequestController {
                         && taskRequest.getDate().minusHours(12).equals(LocalDateTime.now())
         );
         req.setAttribute("tasksRequest", tasksRequest);
-        req.getRequestDispatcher("/pages/tasks/list-request-rejected.jsp").forward(req, resp);
+        req.getRequestDispatcher("/pages/request/list-request-rejected.jsp").forward(req, resp);
 
     }
 }
