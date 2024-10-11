@@ -2,6 +2,8 @@ package com.devsync.domain.entities;
 
 import com.devsync.domain.enums.TaskRequestStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 
 import java.time.LocalDateTime;
@@ -23,10 +25,12 @@ public class TaskRequest {
     private LocalDateTime date;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "task_id")
 
     private Task task;
