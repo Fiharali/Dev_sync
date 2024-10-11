@@ -2,6 +2,7 @@ package com.devsync.service;
 
 import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.User;
+import com.devsync.scheduled.TaskRequestUpdater;
 import com.devsync.service.interfaces.UserServiceInterface;
 
 import java.util.List;
@@ -10,9 +11,10 @@ public class UserService implements UserServiceInterface {
 
 
     private UserDao userDao;
-
     public UserService() {
         userDao = new UserDao();
+
+
     }
 
     @Override

@@ -1,4 +1,9 @@
 <%@ page import="com.devsync.domain.entities.User" %>
+<%@ page import="com.devsync.domain.entities.TaskRequest" %>
+<%@ page import="com.devsync.service.TaskRequestService" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.Duration" %>
 
 <html>
 <head>
@@ -32,37 +37,74 @@
                 </a>
             </div>
             <div class="flex items-center">
+                <%
+                    User SessionUser = (User) session.getAttribute("user");
+                    if (SessionUser != null ) {
+                        TaskRequestService taskRequestService = new TaskRequestService();
+                        List<TaskRequest> tasks = taskRequestService.findAll();
+                %>
+
                 <div class="flex items-center ms-3">
-                    <button id="dropdownNotificationButton" data-dropdown-toggle="dropdownNotification" class="relative me-5 inline-flex items-center text-md  font-medium text-center text-gray-500 hover:text-gray-900 focus:outline-none " type="button">
+
+                    <button id="dropdownNotificationButton" data-dropdown-toggle="dropdownNotification" class="relative me-5 inline-flex items-center text-md font-medium text-center text-gray-500 hover:text-gray-900 focus:outline-none " type="button">
                         <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20">
                             <path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/>
                         </svg>
 
-                        <div class="absolute block w-3 h-3 bg-red-500 border-2 border-white rounded-full -top-0.5 start-2.5 "></div>
+                        <div class="absolute block w-3 h-3 bg-red-500 border-2 border-white rounded-full -top-0.5 start-2.5 ">
+                            <%= tasks.size() %>
+                        </div>
                     </button>
 
-                    <div id="dropdownNotification" class="z-20 hidden w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow " aria-labelledby="dropdownNotificationButton">
-                        <div class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 ">
-                            New Tasks
+                    <div id="dropdownNotification" class="z-20 hidden w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow" aria-labelledby="dropdownNotificationButton">
+                        <div class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50">
+                            Approved Tasks
                         </div>
-                        <div class="divide-y divide-gray-100 ">
-
-                            <a href="#" class="flex px-4 py-3 hover:bg-gray-100 ">
+                        <%  if(SessionUser.getUserType().name().equals("USER")){%>
+                        <div class="divide-y divide-gray-100">
+                            <% for (TaskRequest task : tasks) {
+                                if (task.getUser().getId().equals(SessionUser.getId()) && task.getTaskRequestStatus().name().equals("APPROVED")) {
+                                    LocalDateTime createdDate = task.getDate();
+                                    LocalDateTime now = LocalDateTime.now();
+                                    Duration duration = Duration.between(createdDate, now);
+                                    String timeAgo;
+                                    if (duration.toHours() > 0) {
+                                        timeAgo = duration.toHours() + " hour" + (duration.toHours() > 1 ? "s" : "") + " ago";
+                                    } else if (duration.toMinutes() > 0) {
+                                        timeAgo = duration.toMinutes() + " minute" + (duration.toMinutes() > 1 ? "s" : "") + " ago";
+                                    } else {
+                                        timeAgo = "just now";
+                                    }
+                            %>
+                            <div class="flex items-center px-4 py-3 hover:bg-gray-100">
                                 <div class="flex-shrink-0">
-                                    <img class="rounded-full w-11 h-11" src="/docs/images/people/profile-picture-1.jpg" alt="Jese image">
-                                    <div class="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-blue-600 border border-white rounded-full ">
-                                        <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                                            <path d="M1 18h16a1 1 0 0 0 1-1v-6h-4.439a.99.99 0 0 0-.908.6 3.978 3.978 0 0 1-7.306 0 .99.99 0 0 0-.908-.6H0v6a1 1 0 0 0 1 1Z"/>
-                                            <path d="M4.439 9a2.99 2.99 0 0 1 2.742 1.8 1.977 1.977 0 0 0 3.638 0A2.99 2.99 0 0 1 13.561 9H17.8L15.977.783A1 1 0 0 0 15 0H3a1 1 0 0 0-.977.783L.2 9h4.239Z"/>
-                                        </svg>
-                                    </div>
+                                    <img class="rounded-full w-11 h-11" src="pages/assets/images/default-avatar.png" alt="User Avatar">
                                 </div>
                                 <div class="w-full ps-3">
-                                    <div class="text-gray-500 text-sm mb-1.5 ">New message from <span class="font-semibold text-gray-900 ">Jese Leos</span>: "Hey, what's up? All set for the presentation?"</div>
-                                    <div class="text-xs text-blue-600 ">a few moments ago</div>
+                                    <div class="text-gray-500 text-sm mb-1.5">Task:
+                                        <span class="font-semibold text-gray-900"><%= task.getTask().getTitle() %></span>
+                                    </div>
+                                    <div class="text-xs text-blue-600"><%= timeAgo %></div>
                                 </div>
-                            </a>
+
+                                <form action="tasks-request" method="post">
+                                    <input type="hidden" name="id" value="<%=task.getId()%>">
+                                    <input type="hidden" name="_method"  value="PENDING">
+                                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" <%= task.getUser().getTokens() > 0 ?  "" : "disabled" %> <%=task.getTask().isAssigned() ?"disabled":"" %>  >
+                                        Reject
+                                    </button>
+                                </form>
+                            </div>
+                            <%
+                                    }
+                                }
+                                if (tasks.isEmpty()) {
+                            %>
+                            <div class="px-4 py-2 text-center text-gray-500">No new tasks</div>
+                            <% } %>
                         </div>
+                        <% }%>
+
                     </div>
 
 
@@ -73,37 +115,25 @@
                         </button>
                     </div>
                     <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user">
-                        <%
-                            User SessionUser = (User) session.getAttribute("user");
-                            if (SessionUser != null) {
-                        %>
                         <div class="px-4 py-3" role="none">
-                            <p class="text-sm text-gray-900" role="none">
-                                <%= SessionUser.getUsername() %>
-                            </p>
-                            <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                                <%= SessionUser.getEmail() %>
-                            </p>
-                            <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                                <%= SessionUser.getUserType() %>
-                            </p>
+                            <p class="text-sm text-gray-900" role="none"><%= SessionUser.getUsername() %></p>
+                            <p class="text-sm font-medium text-gray-900 truncate" role="none"><%= SessionUser.getEmail() %></p>
+                            <p class="text-sm font-medium text-gray-900 truncate" role="none"><%= SessionUser.getUserType() %></p>
                         </div>
-                        <%
-                            }
-                        %>
                         <ul class="py-1" role="none">
-
                             <li>
                                 <form action="/login" method="POST">
-                                    <input  type="hidden" name="_method" value="DESTROY"/>
-                                    <input type="submit"  value="LogOut" class="text-left  w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" />
-
+                                    <input type="hidden" name="_method" value="DESTROY"/>
+                                    <input type="submit" value="LogOut" class="text-left w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"/>
                                 </form>
                             </li>
                         </ul>
                     </div>
-
                 </div>
+
+                <%
+                    }
+                %>
             </div>
         </div>
     </div>
