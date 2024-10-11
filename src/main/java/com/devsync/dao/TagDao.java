@@ -20,12 +20,13 @@ public class TagDao {
         return tags;
     }
 
-    public void save(Tag tag) {
+    public Tag save(Tag tag) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(tag);
         em.getTransaction().commit();
         em.close();
+        return tag;
     }
 
     public void delete(Long id) {
@@ -41,12 +42,13 @@ public class TagDao {
         em.close();
     }
 
-    public void update(Tag tag) {
+    public Tag update(Tag tag) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.merge(tag);
         em.getTransaction().commit();
         em.close();
+        return tag;
     }
 
     public Tag findById(Long tagId) {

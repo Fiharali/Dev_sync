@@ -12,20 +12,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    private UserDao userDao;
+    private UserService userService;
 
 
 
     @Override
     public void init() throws ServletException {
-        userDao = new UserDao();
+        userService = new UserService();
     }
 
 
@@ -67,7 +66,7 @@ public class LoginServlet extends HttpServlet {
 
 
     public User authenticate(String email, String password) {
-        User user = userDao.findByEmail(email);
+        User user = userService.findByEmail(email);
         if (user != null) {
             if (BCrypt.checkpw(password, user.getPassword())) {
                 return user;

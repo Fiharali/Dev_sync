@@ -1,11 +1,7 @@
 package com.devsync.servlets;
 
-import com.devsync.dao.UserDao;
-import com.devsync.domain.entities.User;
-import com.devsync.domain.enums.UserType;
-import com.devsync.service.UserService;
+import com.devsync.controller.UserController;
 import com.devsync.utils.CheckAccess;
-import com.devsync.utils.SessionUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,17 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "users", urlPatterns = {"/users"})
 public class UserServlet extends HttpServlet {
 
-        private UserService userService;
+        private UserController userController;
 
 
         @Override
         public void init() throws ServletException {
-                userService = new UserService();
+                userController = new UserController();
         }
 
 
@@ -37,7 +32,7 @@ public class UserServlet extends HttpServlet {
                 if ("create".equals(action)) {
                         req.getRequestDispatcher("pages/users/create.jsp").forward(req, resp);
                 } else {
-                        userService.findAll(req, resp);
+                        userController.findAll(req, resp);
                 }
         }
 
@@ -52,16 +47,16 @@ public class UserServlet extends HttpServlet {
 
                 switch (method) {
                         case "DELETE":
-                                userService.delete(req, resp);
+                                userController.delete(req, resp);
                                 break;
                         case "UPDATE":
-                                userService.edit(req, resp);
+                                userController.edit(req, resp);
                                 break;
                         case "PUT":
-                                userService.update(req, resp);
+                                userController.update(req, resp);
                                 break;
                        default:
-                                userService.save(req, resp);
+                                userController.save(req, resp);
                                 break;
                 }
 

@@ -18,8 +18,9 @@ public class Tag {
     @Column(name = "name", unique = true)
     private String name;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
+
     @ManyToMany(mappedBy = "tags")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Task> tasks;
 
     public Tag() {}

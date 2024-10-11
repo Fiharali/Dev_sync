@@ -21,12 +21,13 @@ public class TaskDao {
         return tasks;
     }
 
-    public void save(Task task) {
+    public Task save(Task task) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(task);
         em.getTransaction().commit();
         em.close();
+        return task;
     }
 
     public void delete(Long id) {
@@ -42,12 +43,13 @@ public class TaskDao {
         em.close();
     }
 
-    public void update(Task task) {
+    public Task update(Task task) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.merge(task);
         em.getTransaction().commit();
         em.close();
+        return  task;
     }
 
     public Task findById(Long taskId) {

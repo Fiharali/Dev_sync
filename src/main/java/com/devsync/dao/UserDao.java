@@ -25,12 +25,13 @@ public class UserDao {
 
     }
 
-    public void save(User user) {
+    public User save(User user) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(user);
         em.getTransaction().commit();
         em.close();
+        return user;
     }
 
 
@@ -48,12 +49,13 @@ public class UserDao {
     }
 
 
-    public void update(User user) {
+    public User update(User user) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.merge(user);
         em.getTransaction().commit();
         em.close();
+        return user;
     }
 
     public User findById(Long userId) {
