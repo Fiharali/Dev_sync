@@ -3,6 +3,7 @@ package com.devsync.service;
 import com.devsync.controller.UserController;
 import com.devsync.dao.TaskRequestDao;
 import com.devsync.domain.entities.TaskRequest;
+import com.devsync.scheduled.TaskRequestUpdater;
 import com.devsync.service.interfaces.TaskRequestServiceInterface;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class TaskRequestService implements TaskRequestServiceInterface {
 
 
     private TaskRequestDao taskRequestDao;
+
 
     public TaskRequestService() {
         taskRequestDao = new TaskRequestDao();

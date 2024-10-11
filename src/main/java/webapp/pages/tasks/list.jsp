@@ -55,7 +55,7 @@
                                     boolean isPastEndDate = now.isAfter(taskEndDate);
                                     boolean isNearEndDate = now.isAfter(taskEndDate.minusDays(3));
                     %>
-                    <div class="relative p-3 rounded shadow bg-white border-t-2 <%= isPastEndDate ? "border-red-700 filtered" : isNearEndDate ? "border-yellow-200" : "border-blue-700" %>"
+                    <div class="relative p-3 rounded shadow bg-white border-t-2 <%= isPastEndDate ? "border-red-700 filtered" : isNearEndDate ? "border-yellow-200" : "border-blue-700" %>  <%= (task.getUser().getId().equals(SessionUser.getId()) || SessionUser.getUserType().name().equals("MANAGER"))? "":"filtered"%>"
                          draggable="<%= isPastEndDate ? "false" : "true" %>"
                          data-task-id="<%= task.getId() %>">
                         <button class="absolute top-0 right-0 me-1 mt-1 <%= isPastEndDate ? "text-red-700" : isNearEndDate ? "text-yellow-200" : "text-blue-700" %>" onclick="deleteTaskAction(<%= task.getId() %> , <%=SessionUser.getUserType().name().equals("MANAGER") || SessionUser.getDeleteTokens() > 0 %> ,<%=SessionUser.getId()%>)">
