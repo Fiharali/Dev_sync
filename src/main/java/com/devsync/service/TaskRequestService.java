@@ -36,4 +36,9 @@ public class TaskRequestService implements TaskRequestServiceInterface {
     public TaskRequest update(TaskRequest taskRequest) {
         return  taskRequestDao.update(taskRequest);
     }
+
+
+    public  TaskRequest findByTsakId(Long taskId) {
+        return taskRequestDao.findByTaskId(taskId);
+    }
 }

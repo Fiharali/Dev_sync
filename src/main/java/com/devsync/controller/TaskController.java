@@ -1,10 +1,13 @@
 package com.devsync.controller;
 
 import com.devsync.domain.entities.Task;
+import com.devsync.domain.entities.TaskRequest;
 import com.devsync.domain.entities.User;
 import com.devsync.domain.entities.Tag;
+import com.devsync.domain.enums.TaskRequestStatus;
 import com.devsync.domain.enums.TaskStatus;
 import com.devsync.service.TagService;
+import com.devsync.service.TaskRequestService;
 import com.devsync.service.TaskService;
 import com.devsync.service.UserService;
 import com.devsync.service.interfaces.TagServiceInterface;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +32,15 @@ public class TaskController {
     private TagServiceInterface tagServiceInterface;
 
     private TaskRequestController taskRequestController;
+    private TaskRequestService  taskRequestService;
+
 
     public TaskController() {
         userServiceInterface = new UserService();
 
         tagServiceInterface = new TagService();
         taskRequestController = new TaskRequestController();
+        taskRequestService = new TaskRequestService();
         taskServiceInterface = new TaskService();
 
 
@@ -181,7 +188,11 @@ public class TaskController {
             taskServiceInterface.update(task);
         }
 
-        taskRequestController.save(user, task);
+        TaskRequest taskRequest = taskRequestService.findByTsakId(taskId);
+        taskRequest.setUser(user);
+        taskRequest.setDate(LocalDateTime.now());
+        taskRequest.setTaskRequestStatus(TaskRequestStatus.APPROVED);
+        taskRequestService.update(taskRequest);
 
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }

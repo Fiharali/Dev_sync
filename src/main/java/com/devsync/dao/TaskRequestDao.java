@@ -53,11 +53,12 @@ public class TaskRequestDao {
        }
 
 
-
-
-
-
-
-
-
+    public TaskRequest findByTaskId(Long taskId) {
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<TaskRequest> query = em.createQuery("SELECT t FROM TaskRequest t WHERE t.task.id = :taskId", TaskRequest.class);
+        query.setParameter("taskId", taskId);
+        List<TaskRequest> taskRequests = query.getResultList();
+        em.close();
+        return taskRequests.isEmpty() ? null : taskRequests.get(0);
+    }
 }

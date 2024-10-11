@@ -55,7 +55,8 @@ public class TaskRequestController {
         taskRequest.setUser(user);
         taskRequest.setTask(task);
         taskRequest.setDate(LocalDateTime.now());
-        taskRequest.setTaskRequestStatus(TaskRequestStatus.PENDING);
+        taskRequest.setTaskRequestStatus(TaskRequestStatus.APPROVED);
+
         taskRequestServiceInterface.save(taskRequest);
 
     }
@@ -66,7 +67,7 @@ public class TaskRequestController {
         TaskRequest taskRequest = taskRequestServiceInterface.findById(id);
         HttpSession session = req.getSession();
         User sessionUser = (User) session.getAttribute("user");
-        if ( status.equals(TaskRequestStatus.PENDING)){
+        if (status.equals(TaskRequestStatus.PENDING)){
             sessionUser.setTokens(sessionUser.getTokens() - 1);
             userServiceInterface.update(sessionUser);
         }

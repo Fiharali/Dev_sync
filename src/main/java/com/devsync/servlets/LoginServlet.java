@@ -2,6 +2,7 @@ package com.devsync.servlets;
 
 import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.User;
+import com.devsync.service.UserService;
 import com.devsync.utils.SessionUtil;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -17,13 +18,13 @@ import java.io.IOException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    private UserDao userDao;
+    private UserService userService;
 
 
 
     @Override
     public void init() throws ServletException {
-        userDao = new UserDao();
+        userService = new UserService();
     }
 
 
@@ -65,7 +66,7 @@ public class LoginServlet extends HttpServlet {
 
 
     public User authenticate(String email, String password) {
-        User user = userDao.findByEmail(email);
+        User user = userService.findByEmail(email);
         if (user != null) {
             if (BCrypt.checkpw(password, user.getPassword())) {
                 return user;
