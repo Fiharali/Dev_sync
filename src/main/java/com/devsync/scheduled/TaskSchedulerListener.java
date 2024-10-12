@@ -16,8 +16,13 @@ public class TaskSchedulerListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         timer = new Timer(true);
         TaskRequestUpdater task = new TaskRequestUpdater();
-
         timer.scheduleAtFixedRate(task, 0, 24*60*60 * 1000);
+
+        ResetToken token = new ResetToken();
+        timer.scheduleAtFixedRate(token, 0, 24*60*60 * 1000);
+
+        DoubleTokens doubleTokens = new DoubleTokens();
+        timer.scheduleAtFixedRate(doubleTokens, 0, 5*60 * 1000);
     }
 
     @Override

@@ -99,17 +99,8 @@ public class TaskRequestController {
 
 
 
-    public void updateTaskRequest() {
-
-        List<TaskRequest> tasksRequest = taskRequestServiceInterface.findAll();
-        tasksRequest.stream().filter(taskRequest ->
-                        taskRequest.getTaskRequestStatus().equals(TaskRequestStatus.PENDING)
-                        && taskRequest.getDate().plusMinutes(1).isBefore(LocalDateTime.now())
-        ).forEach(taskRequest -> {
-            taskRequest.setTaskRequestStatus(TaskRequestStatus.APPROVED);
-            taskRequestServiceInterface.update(taskRequest);
-        });
 
 
-    }
+
+
 }

@@ -76,7 +76,7 @@
                             %>
                             <div class="flex items-center px-4 py-3 hover:bg-gray-100">
                                 <div class="flex-shrink-0">
-                                    <img class="rounded-full w-11 h-11" src="pages/assets/images/default-avatar.png" alt="User Avatar">
+                                    <img class="rounded-full w-11 h-11" src="pages/assets/images/me.png" alt="User Avatar">
                                 </div>
                                 <div class="w-full ps-3">
                                     <div class="text-gray-500 text-sm mb-1.5">Task:
