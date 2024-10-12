@@ -199,18 +199,7 @@ public class TaskController {
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
 
-    private void updateTaskStatuses() {
-        List<Task> tasks = taskServiceInterface.findAll();
-        LocalDate today = LocalDate.now();
 
-        for (Task task : tasks) {
-            LocalDate taskEndDate = task.getDateEnd();
-            if (taskEndDate.isBefore(today) && task.getStatus() != TaskStatus.DONE) {
-                task.setStatus(TaskStatus.OVERDUE);
-            }
-            taskServiceInterface.update(task);
-        }
-    }
 
 
 }

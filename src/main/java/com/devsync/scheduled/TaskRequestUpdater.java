@@ -4,24 +4,20 @@ import com.devsync.domain.entities.Task;
 import com.devsync.domain.enums.TaskStatus;
 import com.devsync.service.TaskService;
 
-import javax.ejb.Schedule;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 
-@Singleton
-@Startup
-public class TaskRequestUpdater {
+public class TaskRequestUpdater extends TimerTask {
 
-    @Inject
-    private TaskService taskService;
+
+    private TaskService taskService=new TaskService();
     private static final Logger logger = Logger.getLogger(TaskRequestUpdater.class.getName());
 
-    @Schedule(minute = "*/1", hour = "*", persistent = false)
-    public void updateTaskStatuses() {
+    @Override
+    public void run() {
         logger.info("Running scheduled task to update statuses...");
         List<Task> tasks = taskService.findAll();
         LocalDate today = LocalDate.now();

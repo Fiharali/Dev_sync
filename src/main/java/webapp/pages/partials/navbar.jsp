@@ -51,16 +51,14 @@
                             <path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/>
                         </svg>
 
-                        <div class="absolute block w-3 h-3 bg-red-500 border-2 border-white rounded-full -top-0.5 start-2.5 ">
-                            <%= tasks.size() %>
-                        </div>
                     </button>
 
                     <div id="dropdownNotification" class="z-20 hidden w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow" aria-labelledby="dropdownNotificationButton">
-                        <div class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50">
-                            Approved Tasks
-                        </div>
                         <%  if(SessionUser.getUserType().name().equals("USER")){%>
+                        <div class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50">
+                             Tasks
+                        </div>
+
                         <div class="divide-y divide-gray-100">
                             <% for (TaskRequest task : tasks) {
                                 if (task.getUser().getId().equals(SessionUser.getId()) && task.getTaskRequestStatus().name().equals("APPROVED")) {
@@ -78,7 +76,7 @@
                             %>
                             <div class="flex items-center px-4 py-3 hover:bg-gray-100">
                                 <div class="flex-shrink-0">
-                                    <img class="rounded-full w-11 h-11" src="pages/assets/images/default-avatar.png" alt="User Avatar">
+                                    <img class="rounded-full w-11 h-11" src="pages/assets/images/me.png" alt="User Avatar">
                                 </div>
                                 <div class="w-full ps-3">
                                     <div class="text-gray-500 text-sm mb-1.5">Task:
