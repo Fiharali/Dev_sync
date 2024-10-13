@@ -27,7 +27,8 @@
                 List<TaskRequest> tasks = (List<TaskRequest>) request.getAttribute("tasksRequest");
                 if (tasks != null) {
                     for (TaskRequest task : tasks) {
-                        if (  task.getTaskRequestStatus().name().equals("PENDING")) {
+                        if (  task.getTaskRequestStatus().name().equals("PENDING")
+                                && task.getDate().isBefore(LocalDateTime.now().plusHours(12)) ) {
             %>
             <tr class="bg-white border-b">
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">

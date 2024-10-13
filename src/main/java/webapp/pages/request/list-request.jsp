@@ -27,7 +27,9 @@
                 List<TaskRequest> tasks = (List<TaskRequest>) request.getAttribute("tasks");
                 if (tasks != null) {
                     for (TaskRequest task : tasks) {
-                        if (task.getUser().getId().equals(SessionUser.getId()) && task.getTaskRequestStatus().name().equals("APPROVED")) {
+                        if (task.getUser().getId().equals(SessionUser.getId())
+                                && task.getDate().isBefore(LocalDateTime.now().plusDays(1))
+                                && task.getTaskRequestStatus().name().equals("APPROVED")) {
             %>
             <tr class="bg-white border-b">
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">

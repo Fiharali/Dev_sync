@@ -65,7 +65,7 @@ public class TaskController {
         LocalDate dateStart = LocalDate.parse(req.getParameter("dateStart"));
 
         HttpSession session = req.getSession();
-        if (dateEnd.isBefore(LocalDate.now().plusDays(3))){
+        if (dateStart.isBefore(LocalDate.now().plusDays(3))){
             session.setAttribute("errorMessageFirst", "start date must be 3 days from now");
             resp.sendRedirect(req.getContextPath() + "/tasks?action=create");
             return;

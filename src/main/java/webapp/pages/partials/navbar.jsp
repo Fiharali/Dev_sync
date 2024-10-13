@@ -32,7 +32,7 @@
                     </svg>
                 </button>
                 <a href="/" class="flex ms-2 md:me-24">
-                    <img src="/pages/assets/images/logo.png" class="h-8 me-3" alt="FlowBite Logo" />
+                    <img src="../assets/images/me.png" class="h-8 me-3" alt="FlowBite Logo" />
                     <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">ALI</span>
                 </a>
             </div>
