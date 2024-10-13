@@ -1,5 +1,3 @@
-package com.devsync;
-
 import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.User;
 import com.devsync.domain.enums.UserType;
@@ -7,6 +5,7 @@ import com.devsync.service.UserService;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.java.Before;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -28,11 +27,15 @@ public class UserServiceSteps {
     private List<User> users;
     private User user;
 
+    @Before
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Given("the system has users")
     public void systemHasUsers() {
-        MockitoAnnotations.openMocks(this);
         users = new ArrayList<>();
-        users.add(new User(1L,  "User", "One", "user1@example.com", "password","user1", UserType.USER, 1 , 1));
+        users.add(new User(1L, "User", "One", "user1@example.com", "password", "user1", UserType.USER, 1, 1));
         when(userDao.findAll()).thenReturn(users);
     }
 
@@ -49,7 +52,7 @@ public class UserServiceSteps {
 
     @Given("I have a new user")
     public void iHaveANewUser() {
-        User user = new User(1L, "User", "Two", "user2@example.com", "password", "user2", UserType.USER,1,1);
+        user = new User(1L, "User", "Two", "user2@example.com", "password", "user2", UserType.USER, 1, 1);
         when(userDao.save(user)).thenReturn(user);
     }
 
@@ -66,8 +69,8 @@ public class UserServiceSteps {
 
     @Given("the system has a user with id {long}")
     public void systemHasUserWithId(Long id) {
-        User mockUser = new User(1L,  "User", "Three", "user3@example.com", "password","user3", UserType.USER, 1, 2);
-        when(userDao.findById(id)).thenReturn(user);
+        User mockUser = new User(id, "User", "Three", "user3@example.com", "password", "user3", UserType.USER, 1, 2);
+        when(userDao.findById(id)).thenReturn(mockUser);
     }
 
     @When("I search for the user by id")
