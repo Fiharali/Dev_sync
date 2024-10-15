@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskController {
 
@@ -37,7 +38,6 @@ public class TaskController {
 
     public TaskController() {
         userServiceInterface = new UserService();
-
         tagServiceInterface = new TagService();
         taskRequestController = new TaskRequestController();
         taskRequestService = new TaskRequestService();
@@ -52,8 +52,25 @@ public class TaskController {
 
         List<Task> tasks = taskServiceInterface.findAll();
         List<User> users = userServiceInterface.findAll();
+        List<Tag> tags = tagServiceInterface.findAll();
+
+        String selectByTagParam = req.getParameter("selectByTag");
+        if (selectByTagParam != null && !selectByTagParam.isEmpty()) {
+
+                Long selectByTag = Long.parseLong(selectByTagParam);
+                Tag selectedTag = tagServiceInterface.findById(selectByTag);
+                tasks = tasks.stream()
+                        .filter(task -> task.getTags().stream()
+                                .anyMatch(tag -> tag.getId().equals(selectedTag.getId()))
+                        )
+                        .collect(Collectors.toList());
+                req.setAttribute("selectedTagId", selectedTag.getId() != null ?selectedTag.getId() : null);
+        }
+
+
         req.setAttribute("tasks", tasks);
         req.setAttribute("users", users);
+        req.setAttribute("tags", tags);
         req.getRequestDispatcher("/pages/tasks/list.jsp").forward(req, resp);
     }
 
@@ -198,8 +215,6 @@ public class TaskController {
 
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }
-
-
 
 
 }

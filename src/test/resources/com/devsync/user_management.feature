@@ -19,3 +19,12 @@ Feature: User Management
     Given the system has a user with id 1
     When I delete the user
     Then the user should be removed from the system
+
+
+
+
+
+
+
+
+

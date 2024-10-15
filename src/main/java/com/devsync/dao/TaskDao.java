@@ -33,13 +33,15 @@ public class TaskDao {
     public void delete(Long id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-
-        Task task = em.find(Task.class, id);
+        Task task = findById(id);
         if (task != null) {
-            em.remove(task);
+            if (em.contains(task)) {
+                em.remove(task);
+            } else {
+                em.remove(em.merge(task));
+            }
+            em.getTransaction().commit();
         }
-
-        em.getTransaction().commit();
         em.close();
     }
 

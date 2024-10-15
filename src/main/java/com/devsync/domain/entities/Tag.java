@@ -20,7 +20,6 @@ public class Tag {
 
 
     @ManyToMany(mappedBy = "tags")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Task> tasks;
 
     public Tag() {}
