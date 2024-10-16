@@ -2,10 +2,9 @@ package com.devsync.service;
 
 import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.User;
-import com.devsync.exeptions.EmailExistException;
-import com.devsync.exeptions.InvalidArgumentException;
-import com.devsync.exeptions.ResourceNotFoundException;
-import com.devsync.scheduled.TaskRequestUpdater;
+import com.devsync.exceptions.EmailExistException;
+import com.devsync.exceptions.InvalidArgumentException;
+import com.devsync.exceptions.ResourceNotFoundException;
 import com.devsync.service.interfaces.UserServiceInterface;
 
 import java.util.List;
@@ -38,10 +37,13 @@ public class UserService implements UserServiceInterface {
             throw new InvalidArgumentException("User cannot be null");
         }
             User existingUser = findByEmail(user.getEmail());
-            if (existingUser != null) {
-                throw new EmailExistException("This email is already used");
+            if (existingUser == null) {
+                return userDao.save(user);
             }
-            return userDao.save(user);
+
+        throw new EmailExistException("This email is already used");
+
+
     }
 
     @Override
@@ -57,6 +59,11 @@ public class UserService implements UserServiceInterface {
         if (userId == null) {
             throw new InvalidArgumentException("User id  cannot be null");
         }
+        User existingUser = findById(userId);
+        if (existingUser == null) {
+            throw new ResourceNotFoundException("This user not found ");
+        }
+
        userDao.delete(userId);
     }
 
