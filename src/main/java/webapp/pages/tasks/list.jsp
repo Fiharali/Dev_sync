@@ -40,9 +40,9 @@
         <form class="flex items-center max-w-lg mx-auto" method="get" action="/tasks">
             <label for="voice-search" class="sr-only" >Search</label>
             <div class="relative w-full">
-                <input type="hidden" name="_method" value="SEARCH">
-                <select name="selectByTag" id="voice-search"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" required>
+
+                <select name="selectByTag" id="voice-search" onchange="this.form.submit()"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5" >
                     <option value="">Select tags</option>
 
                     <%
