@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (SessionUtil.isUserLoggedIn(req, resp)) {
-            resp.sendRedirect(req.getContextPath() + "/tasks");
+            resp.sendRedirect(req.getContextPath() + "/");
             return;
         }
             req.getRequestDispatcher("pages/auth/login.jsp").forward(req, resp);
@@ -54,7 +54,7 @@ public class LoginServlet extends HttpServlet {
             User user = authenticate(email, password);
             if (user != null) {
                 req.getSession().setAttribute("user", user);
-                resp.sendRedirect(req.getContextPath() + "/tasks");
+                resp.sendRedirect(req.getContextPath() + "/");
             } else {
                 req.setAttribute("error", "Invalid username or password");
                 RequestDispatcher dispatcher = req.getRequestDispatcher("pages/auth/login.jsp");

@@ -68,6 +68,10 @@
         <div class="p-6 bg-white border border-gray-200 rounded-lg shadow">
             <h2 class="text-xl font-semibold mb-4">Task Statistics</h2>
             <canvas id="tasksChart"></canvas>
+            <div class="mt-10">
+                le nombre de jetons utilises :
+                <%=tasks.stream().filter(task -> task.isAssigned()).count()%>
+            </div>
         </div>
 
         <div class="p-6 bg-white border border-gray-200 rounded-lg shadow">

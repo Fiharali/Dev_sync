@@ -8,6 +8,7 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserDao {
 
@@ -58,11 +59,11 @@ public class UserDao {
         return user;
     }
 
-    public User findById(Long userId) {
+    public Optional<User> findById(Long userId) {
         EntityManager em = emf.createEntityManager();
         User user = em.find(User.class, userId);
         em.close();
-        return user;
+        return Optional.of( user);
     }
 
     public List<User> getUserWhoHaveUserTypeUser() {

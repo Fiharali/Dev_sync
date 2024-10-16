@@ -25,8 +25,6 @@ public class UserController {
         req.getRequestDispatcher("/pages/users/list.jsp").forward(req, resp);
     }
 
-
-
     public User findById(Long userId) {
         return userServiceInterface.findById(userId);
     }
@@ -87,8 +85,6 @@ public class UserController {
     }
 
 
-
-
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long userId = Long.parseLong(req.getParameter("id"));
         userServiceInterface.delete(userId);
@@ -96,9 +92,5 @@ public class UserController {
         resp.sendRedirect(req.getContextPath() + "/users");
     }
 
-
-    public List<User> getUserWhoHaveUserTypeUser() {
-        return userServiceInterface.getUsers();
-    }
 
 }

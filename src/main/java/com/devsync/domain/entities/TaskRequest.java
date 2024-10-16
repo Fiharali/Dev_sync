@@ -25,14 +25,13 @@ public class TaskRequest {
     private LocalDateTime date;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "task_id")
-
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Task task;
 
     public TaskRequest() {
