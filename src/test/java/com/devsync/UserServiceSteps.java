@@ -1,3 +1,5 @@
+package com.devsync;
+
 import com.devsync.dao.UserDao;
 import com.devsync.domain.entities.User;
 import com.devsync.domain.enums.UserType;
@@ -12,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -70,7 +73,7 @@ public class UserServiceSteps {
     @Given("the system has a user with id {long}")
     public void systemHasUserWithId(Long id) {
         User mockUser = new User(id, "User", "Three", "user3@example.com", "password", "user3", UserType.USER, 1, 2);
-        when(userDao.findById(id)).thenReturn(mockUser);
+        when(userDao.findById(id)).thenReturn(Optional.of(mockUser));
     }
 
     @When("I search for the user by id")

@@ -92,7 +92,7 @@
                         <div class="flex items-center mt-2">
                             <button data-modal-target="assigned-modal-<%= task.getId() %>" data-modal-toggle="assigned-modal-<%= task.getId() %>" class="block text-white" type="button">
                                 <div class="flex">
-                                    <img src="pages/assets/images/me.png" alt="Assignee" class="w-6 h-6 rounded-full bg-gray-300">
+                                    <img src="../assets/images/me.png" alt="Assignee" class="w-6 h-6 rounded-full bg-gray-300">
                                     <%
                                         java.time.LocalDate today = java.time.LocalDate.now();
                                         long daysDifference = java.time.temporal.ChronoUnit.DAYS.between(today, task.getDateEnd());
@@ -104,7 +104,7 @@
                                         </span>
                                 </div>
                             </button>
-                            <% if (SessionUser.getUserType().name().equals("MANAGER") && !task.isAssigned() ) { %>
+                            <% if (SessionUser.getUserType().name().equals("MANAGER") ) { %>
                             <div id="assigned-modal-<%= task.getId() %>" tabindex="-1" class="hidden fixed top-40 right-0 left-0 z-50 justify-center items-center w-full max-h-full">
                                 <div class="relative p-4 w-full max-w-md">
                                     <div class="relative bg-white rounded-lg">
