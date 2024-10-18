@@ -22,7 +22,10 @@ public class TaskSchedulerListener implements ServletContextListener {
         timer.scheduleAtFixedRate(token, 0, 24*60*60 * 1000);
 
         DoubleTokens doubleTokens = new DoubleTokens();
-        timer.scheduleAtFixedRate(doubleTokens, 0, 5*60 * 1000);
+        timer.scheduleAtFixedRate(doubleTokens, 0, 24*60*60 * 1000);
+
+        ResetDeleteToken resetDeleteToken = new ResetDeleteToken();
+        timer.scheduleAtFixedRate(resetDeleteToken, 0, 30L*24*60*60 * 1000);
     }
 
     @Override
